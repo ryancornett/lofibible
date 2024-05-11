@@ -1,0 +1,107 @@
+:root {
+    font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    line-height: 1.5;
+    font-weight: 400;
+  
+    color-scheme: light dark;
+    color: rgba(255, 255, 255, 0.87);
+    background-color: #242424;
+  
+    font-synthesis: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+  }
+  
+  body {
+    margin: 0;
+    /* display: flex; */
+    place-items: center;
+    min-width: 320px;
+    min-height: 100vh;
+  }
+  
+  h1 {
+    font-size: 1.2em;
+    line-height: 1.1;
+  }
+
+  .background {
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 1;
+    background-image: url('assets/headphones.png');
+    filter: brightness(0.35) blur(8px);
+    -webkit-filter: brightness(0.35) blur(8px);
+  
+    height: 100vh;
+    width: 100vw;
+  
+    background-size: cover;
+  }
+  
+  .app-container {
+    height: 100vh;
+    position: relative;
+    z-index: 100;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  #chapter-selector-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  
+  .chapter-selector {
+    margin-bottom: 1rem;
+  }
+  
+  .play-pause {
+    cursor: pointer;
+    filter: invert(1);
+    max-width: 6vw;
+    transition: all ease-in-out 400ms;
+  }
+  
+  .play-pause:hover {
+    filter: invert(1) drop-shadow(0 0 15px rgb(248, 202, 17));
+    transition: all ease-in-out 400ms;
+  }
+
+  .lofi-info {
+    font-size: 0.75rem;
+  }
+  
+  .ui-notes > li {
+    text-align: left;
+  }
+  
+  footer {
+    position: relative;
+    z-index: 200;
+    background-color: rgb(58, 17, 3);
+    display: flex;
+    width: 100%;
+    height: 50vh;
+  }
+  
+  footer > div {
+    margin: 0 2rem;
+  }
+  
+  .why-bsb > p, .footer-links {
+    text-align: left;
+  }
+  
+  /* @media (prefers-color-scheme: light) {
+    :root {
+      color: #213547;
+      background-color: #e9f2fe;
+    }
+  } */
+  

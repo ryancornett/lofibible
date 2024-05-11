@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <title>Lofi Audio Bible</title>
+        <link rel="icon" type="image/png" href="./assets/lofi_bible.png" />
+        <meta name="description" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <link rel="stylesheet" href="styles.css">
+    </head>
+    <body>
+        <div class="background"></div>
+
+        <div class="app-container">
+            <h1>Lofi Audio Bible</h1>
+            
+            <main>
+                <article>
+                    <audio id="bible-player"></audio>
+                </article>
+                
+                <article>
+                    <audio id="lofi-player"></audio>
+                </article>
+
+                <article id="selector">
+                    <select id="book-selector">
+
+                    </select>
+
+                    <select id="chapter-selector">
+                        
+                    </select>
+                </article>
+
+                <img src="assets/play.png" class="play-pause" onclick="handlePlayPause()" alt="Play or pause button" />
+                <div class="lofi-info"></div>
+            </main>
+
+            <ul class="ui-notes">
+                <li>Display chapter text</li>          
+                <li>Bible audio: volume, playback rate, previous, and next controls</li>
+                <li>Music: volume control; display artist & title with link icon</li>
+            </ul>
+        </div>
+        
+        <footer>
+            <div class="why-bsb">
+                <h4>Why the Berean Standard Bible translation?</h4>
+                <p>The Berean Standard Bible (BSB) is in the public domain and licensing is not required. The BSB is free to share--there is no limit to how many verses/chapters may be distributed or what percentage of a work the words of the BSB may make up.
+                </p>
+                <p> Such an excellent translation that encourages sharing should be celebrated.</p>
+            </div>
+
+            <div class="footer-links">
+                <div class="support">
+                    <h4>Support the Site</h4>
+                </div>
+                <div class="report">
+                    <h4>Submit Feedback</h4>
+                </div>
+                <div class="custom-bible-plan">
+                    <h4>CustomBiblePlan.com</h4>
+                </div>
+            </div>
+        </footer>
+
+        <script src="app.js" type="module" async defer></script>
+    </body>
+</html>

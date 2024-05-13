@@ -13,37 +13,34 @@
     <body>
         <div class="background"></div>
 
-        <div class="app-container">
+        <div class="app">
             <h1>Lofi Audio Bible</h1>
             
             <main>
-                <article>
-                    <audio id="bible-player"></audio>
-                </article>
-                
-                <article>
-                    <audio id="lofi-player"></audio>
-                </article>
+                <audio id="bible-player"></audio>
+                <audio id="lofi-player"></audio>
 
-                <article id="selector">
-                    <select id="book-selector">
-
-                    </select>
-
-                    <select id="chapter-selector">
-                        
-                    </select>
-                </article>
+                <div id="selector">
+                    <select id="book-selector"></select>
+                    <select id="chapter-selector"></select>
+                    <span id="playback-rate-selector">1.00x</span>
+                </div>
 
                 <img src="assets/play.png" class="play-pause" onclick="handlePlayPause()" alt="Play or pause button" />
-                <div class="lofi-info"></div>
+
+                <div class="lofi-info">
+                    <span><a class="artist-link"><img src="assets/link.png" id="link-icon" alt="Link icon" /></a></span>
+                    <span id="song-title"></span>
+                    <span> - </span>
+                    <span id="song-artist"></span>
+                </div>
+
+                <div class="lofi-volume-wrapper">
+                    <label for="lofi-volume"><img onclick="handleQuickMute" id="lofi-volume-icon" src="assets/audible.png" alt="Volume icon" /></label>
+                    <input type="range" id="lofi-volume" min="0" max="100" value="30" />
+                </div>
             </main>
 
-            <ul class="ui-notes">
-                <li>Display chapter text</li>          
-                <li>Bible audio: volume, playback rate, previous, and next controls</li>
-                <li>Music: volume control; display artist & title with link icon</li>
-            </ul>
         </div>
         
         <footer>

@@ -1,9 +1,8 @@
-import { booksList, chaptersList, audio, lofi } from "./data.js";
+import { booksList, chaptersList, audio, lofi, apiRef, rate, sample } from "./data.js";
+import BuildChapter from "./builder.js";
 
-// selectors
+//#region bookSelector
 const bookSelector = document.getElementById('book-selector');
-const chapterSelector = document.getElementById('chapter-selector');
-
 (function InitializeBookSelectorToJohn() {
     booksList.forEach((book, index) => {
         let option = new Option(book, index);
@@ -13,8 +12,22 @@ const chapterSelector = document.getElementById('chapter-selector');
         bookSelector.options[bookSelector.options.length] = option;
     });
 })();
-    
 
+bookSelector.addEventListener("change", function () {
+    chapterSelector.innerHTML = '';
+    let placeholderOption = document.createElement("option");
+        placeholderOption.disabled = true;
+        placeholderOption.selected = true;
+        placeholderOption.text = "--select a chapter--";
+        chapterSelector.add(placeholderOption);
+    for (let i = 1; i <= chaptersList[bookSelector.value]; i++) {
+        chapterSelector.options[chapterSelector.options.length] = new Option(i, i);
+    }
+});
+//#endregion bookSelector
+
+//#region chapterSelector
+const chapterSelector = document.getElementById('chapter-selector');
 (function InitializeChapterSelectorForJohn1() {
     let placeholderOption = document.createElement("option");
     placeholderOption.disabled = true;
@@ -30,55 +43,23 @@ const chapterSelector = document.getElementById('chapter-selector');
     }
 })();
 
-
-bookSelector.addEventListener("change", function () {
-    chapterSelector.innerHTML = '';
-    let placeholderOption = document.createElement("option");
-        placeholderOption.disabled = true;
-        placeholderOption.selected = true;
-        placeholderOption.text = "--select a chapter--";
-        chapterSelector.add(placeholderOption);
-    for (let i = 1; i <= chaptersList[bookSelector.value]; i++) {
-        chapterSelector.options[chapterSelector.options.length] = new Option(i, i);
-    }
-});
-
 chapterSelector.addEventListener("change", playChapter);
+//#endregion chapterSelector
 
+//#region playBackRate
+let selectedRate = 0;
 const playbackRateSelector = document.getElementById('playback-rate-selector');
 playbackRateSelector.addEventListener("click", function () {
-    if (playbackRateSelector.textContent == "1.00x") {
-        playbackRateSelector.textContent = "1.25x";
-        biblePlayer.playbackRate = 1.25;
-    }
-    else if (playbackRateSelector.textContent == "1.25x") {
-        playbackRateSelector.textContent = "1.50x";
-        biblePlayer.playbackRate = 1.5;
-    }
-    else if (playbackRateSelector.textContent == "1.50x") {
-        playbackRateSelector.textContent = "1.75x";
-        biblePlayer.playbackRate = 1.75;
-    }
-    else if (playbackRateSelector.textContent == "1.75x") {
-        playbackRateSelector.textContent = "2.00x";
-        biblePlayer.playbackRate = 2;
-    }
-    else if (playbackRateSelector.textContent == "2.00x") {
-        playbackRateSelector.textContent = "0.50x";
-        biblePlayer.playbackRate = 0.5;
-    }
-    else if (playbackRateSelector.textContent == "0.50x") {
-        playbackRateSelector.textContent = "0.75x";
-        biblePlayer.playbackRate = 0.75;
-    }
-    else if (playbackRateSelector.textContent == "0.75x") {
-        playbackRateSelector.textContent = "1.00x";
-        biblePlayer.playbackRate = 1;
-    }
+    selectedRate = selectedRate == 6 ? selectedRate = 0 : ++selectedRate;
+    setPlaybackRate();
 });
-//end selectors
+function setPlaybackRate() {
+    playbackRateSelector.textContent = Object.keys(rate[selectedRate]);
+    biblePlayer.playbackRate = Object.values(rate[selectedRate]);
+}
+//#endregion playBackRate
 
-// lofi player
+//#region lofiPlayer
 let lofiIndex = 0;
 const lofiPlayer = document.getElementById('lofi-player');
 lofiPlayer.volume = 0.3;
@@ -101,7 +82,9 @@ lofiPlayer.addEventListener("ended", function () {
     songTitle.textContent = lofi[lofiIndex].title;
     songArtist.textContent = lofi[lofiIndex].artist;
 });
+//#endregion lofiPlayer
 
+//#region lofiVolumeIcon
 const lofiVolumeIcon = document.getElementById('lofi-volume-icon');
 
 lofiVolumeSelector.addEventListener('change', function () {
@@ -119,9 +102,9 @@ lofiVolumeIcon.onclick = function handleQuickMute() {
     }
     lofiVolumeSelector.dispatchEvent(new Event('change'));
 }
-// end lofi player
+//#endregion lofiVolumeIcon
 
-// Bible player
+//#region biblePlayer
 const biblePlayer = document.getElementById('bible-player');
 biblePlayer.src = audio["John"][0];
 
@@ -148,10 +131,9 @@ function handleEndOfAllChaptersExceptLastChapter() {
     chapterSelector.selectedIndex = parseInt(chapterSelector.value) + 1;
     biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value];
 }
+//#endregion biblePlayer
 
-//end Bible player
-
-// play logic
+//#region Play/Pause Logic
 
 let isPlaying = false;
 
@@ -169,21 +151,24 @@ function playPauseLogic() {
     }
 };
 
-function playChapter() {
+async function playChapter() {
+    await displayChapterText();
     isPlaying = false;
     biblePlayer.pause();
     biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1];
     playPauseLogic();
-    biblePlayer.onloadedmetadata = function() {
-        console.log(biblePlayer.duration);
-    };
-    if (playbackRateSelector.textContent == "1.00x") { biblePlayer.playbackRate = 1; }
-    else if (playbackRateSelector.textContent == "1.25x") { biblePlayer.playbackRate = 1.25; }
-    else if (playbackRateSelector.textContent == "1.50x") { biblePlayer.playbackRate = 1.50; }
-    else if (playbackRateSelector.textContent == "1.75x") { biblePlayer.playbackRate = 1.75; }
-    else if (playbackRateSelector.textContent == "2.00x") { biblePlayer.playbackRate = 2; }
-    else if (playbackRateSelector.textContent == "0.50x") { biblePlayer.playbackRate = 0.5; }
-    else if (playbackRateSelector.textContent == "0.75x") { biblePlayer.playbackRate = 0.75; }
+    // biblePlayer.onloadedmetadata = function() {
+    //     let interval = 20;
+    //     setInterval(ScrollVerses, interval);
+    //         let chapterTimeMs = biblePlayer.duration / 1000;
+    //         let distancePixels = chapterContainer.clientHeight;
+    //         let step = (chapterTimeMs/distancePixels)*20;
+    //         function ScrollVerses() {
+    //             chapterContainer.scroll(0, step);
+    //             step = step + chapterTimeMs;
+    //         }
+    // };
+    setPlaybackRate();
 };
 
 const playPauseButton = document.querySelector('.play-pause');
@@ -191,16 +176,75 @@ const playPauseButton = document.querySelector('.play-pause');
 playPauseButton.onclick = function handlePlayPause() {
     playPauseLogic();
 };
-//end play logic
+//#endregion Play/Pause Logic
 
-
+//#region Get Chapter Text
 const translation = 'BSB';
-const book = 'GEN';
-const chapter = 1;
 
-// Get Genesis 1 from the BSB translation
-fetch(`https://bible.helloao.org/api/${translation}/${book}/${chapter}.json`)
-    .then(request => request.json())
-    .then(chapter => {
-        console.log('Genesis 1 (BSB):', chapter);
-});
+async function GetChapterData() {
+    let bookIndex = parseInt(bookSelector.value);
+    try {
+        const response = await fetch(`https://bible.helloao.org/api/${translation}/${apiRef[bookIndex]}/${chapterSelector.value}.json`);
+        if (!response.ok) {
+            throw new Error('Failed to fetch data');
+        }
+        const chapter = await response.json();
+        return chapter;
+    } catch (error) {
+        console.error('Error fetching data:', error);
+        // You might want to handle the error in some way, e.g., returning a default value
+        return null;
+    }
+};
+
+const chapterContainer = document.querySelector('.chapter-container');
+let theme = "dark";
+
+async function displayChapterText() {
+    chapterContainer.innerHTML = "";
+    const switcherContainer = document.createElement('div');
+    switcherContainer.classList.add('switcher-container');
+    const switcher = document.createElement('img');
+    switcher.classList.add("theme-switcher");
+    switcher.src = theme == 'dark' ? "assets/sun.png" : "assets/moon.png";
+    switcher.addEventListener('click', function () {
+        if (theme == "dark") {
+            switcher.src = "assets/moon.png";
+            theme = "light";
+        }
+        else {
+            switcher.src = "assets/sun.png";
+            theme = "dark";
+        }
+        chapterContainer.classList.toggle("light");
+        switcher.classList.toggle("light");
+    });
+    switcherContainer.appendChild(switcher);
+    chapterContainer.appendChild(switcherContainer);
+
+    let chapterComponents = await BuildChapter(await GetChapterData());
+    chapterComponents.forEach(item => {
+        chapterContainer.append(item);
+    })
+};
+
+// displayChapterText();
+
+//#endregion Get Chapter Text
+
+//#region Footer
+
+const app = document.querySelector('.app');
+const infoModal = document.getElementById('info-modal');
+const infoClickable = document.getElementById('info-clickable');
+const closeInfo = document.getElementById('close-info');
+infoClickable.addEventListener('click', function () {
+    infoModal.showModal();
+    app.classList.add('dialog-opened');
+})
+closeInfo.addEventListener('click', function () {
+    infoModal.close();
+    app.classList.remove('dialog-opened');
+})
+
+//#endregion Footer

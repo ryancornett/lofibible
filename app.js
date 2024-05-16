@@ -46,7 +46,10 @@ const chapterSelector = document.getElementById('chapter-selector');
 chapterSelector.addEventListener("change", playChapter);
 //#endregion chapterSelector
 
-//#region playBackRate
+//#region interactive controls
+let restartClickable = document.querySelector('.restart');
+restartClickable.addEventListener('click', playChapter);
+
 let selectedRate = 0;
 const playbackRateSelector = document.getElementById('playback-rate-selector');
 playbackRateSelector.addEventListener("click", function () {
@@ -57,7 +60,24 @@ function setPlaybackRate() {
     playbackRateSelector.textContent = Object.keys(rate[selectedRate]);
     biblePlayer.playbackRate = Object.values(rate[selectedRate]);
 }
-//#endregion playBackRate
+
+let theme = "dark";
+const switcher = document.querySelector('.switcher');
+switcher.classList.add("theme-switcher");
+switcher.src = theme == 'dark' ? "assets/icons/sun.png" : "assets/icons/moon.png";
+switcher.addEventListener('click', function () {
+    if (theme == "dark") {
+        switcher.src = "assets/icons/moon.png";
+        theme = "light";
+    }
+    else {
+        switcher.src = "assets/icons/sun.png";
+        theme = "dark";
+    }
+    chapterContainer.classList.toggle("light");
+});
+
+//#endregion interactive controls
 
 //#region lofiPlayer
 let lofiIndex = 0;
@@ -72,7 +92,6 @@ const songArtist = document.querySelector('#song-artist');
 artistLink.href = lofi[lofiIndex].source;
 songTitle.textContent = lofi[lofiIndex].title;
 songArtist.textContent = lofi[lofiIndex].artist;
-
 
 lofiPlayer.addEventListener("ended", function () {
     if (lofiIndex == lofi.length -1) { lofiIndex = 0; }
@@ -89,8 +108,10 @@ const lofiVolumeIcon = document.getElementById('lofi-volume-icon');
 
 lofiVolumeSelector.addEventListener('change', function () {
     lofiPlayer.volume = lofiVolumeSelector.value/100;
-    if (lofiVolumeSelector.value < 6) { lofiVolumeIcon.src = "assets/muted.png"; }
-    else { lofiVolumeIcon.src = "assets/audible.png"; }
+    if (lofiVolumeSelector.value <= 5) { lofiVolumeIcon.src = "assets/icons/muted.png"; }
+    else if (lofiVolumeSelector.value > 5 && lofiVolumeSelector.value <= 20) { lofiVolumeIcon.src = "assets/icons/quiet.png"; }
+    else if (lofiVolumeSelector.value > 20 && lofiVolumeSelector.value <= 40) { lofiVolumeIcon.src = "assets/icons/medium.png"; }
+    else { lofiVolumeIcon.src = "assets/icons/loud.png"; }
 })
 
 lofiVolumeIcon.onclick = function handleQuickMute() {
@@ -106,6 +127,7 @@ lofiVolumeIcon.onclick = function handleQuickMute() {
 
 //#region biblePlayer
 const biblePlayer = document.getElementById('bible-player');
+biblePlayer.volume = 1;
 biblePlayer.src = audio["John"][0];
 
 biblePlayer.addEventListener("ended", function () {
@@ -131,6 +153,29 @@ function handleEndOfAllChaptersExceptLastChapter() {
     chapterSelector.selectedIndex = parseInt(chapterSelector.value) + 1;
     biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value];
 }
+
+const nextButton = document.querySelector('.next');
+nextButton.onclick = function handleNextChapter() {
+    biblePlayer.dispatchEvent(new Event('ended'));
+}
+
+const previousButton = document.querySelector('.previous');
+previousButton.onclick = function handlePreviousChapter() {
+    if (biblePlayer.src == audio["Genesis"][0]) { 
+        biblePlayer.src = audio["Revelation"][21];
+        bookSelector.selectedIndex = 65;
+        chapterSelector.selectedIndex = chaptersList[bookSelector.value];
+    }
+    else if (chapterSelector.value == 1) {
+        bookSelector.selectedIndex = parseInt(bookSelector.value) - 1;
+        chapterSelector.selectedIndex = chaptersList[bookSelector.value];
+    }
+    else {
+        chapterSelector.selectedIndex = chapterSelector.selectedIndex - 1;
+    }
+    chapterSelector.dispatchEvent(new Event('change'));
+}
+
 //#endregion biblePlayer
 
 //#region Play/Pause Logic
@@ -142,12 +187,12 @@ function playPauseLogic() {
     if (isPlaying) {
         lofiPlayer.play();
         biblePlayer.play();
-        playPauseButton.src = "assets/pause.png";
+        playPauseButton.src = "assets/icons/pause.png";
     }
     else {
         lofiPlayer.pause();
         biblePlayer.pause();
-        playPauseButton.src = "assets/play.png";
+        playPauseButton.src = "assets/icons/play.png";
     }
 };
 
@@ -157,17 +202,6 @@ async function playChapter() {
     biblePlayer.pause();
     biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1];
     playPauseLogic();
-    // biblePlayer.onloadedmetadata = function() {
-    //     let interval = 20;
-    //     setInterval(ScrollVerses, interval);
-    //         let chapterTimeMs = biblePlayer.duration / 1000;
-    //         let distancePixels = chapterContainer.clientHeight;
-    //         let step = (chapterTimeMs/distancePixels)*20;
-    //         function ScrollVerses() {
-    //             chapterContainer.scroll(0, step);
-    //             step = step + chapterTimeMs;
-    //         }
-    // };
     setPlaybackRate();
 };
 
@@ -180,6 +214,7 @@ playPauseButton.onclick = function handlePlayPause() {
 
 //#region Get Chapter Text
 const translation = 'BSB';
+const chapterContainer = document.querySelector('.chapter-container');
 
 async function GetChapterData() {
     let bookIndex = parseInt(bookSelector.value);
@@ -191,44 +226,25 @@ async function GetChapterData() {
         const chapter = await response.json();
         return chapter;
     } catch (error) {
-        console.error('Error fetching data:', error);
-        // You might want to handle the error in some way, e.g., returning a default value
+        chapterContainer.textContent = "An error occurred. Please try again.";
         return null;
     }
 };
 
-const chapterContainer = document.querySelector('.chapter-container');
-let theme = "dark";
+const attributionNotice = document.createElement('p');
+attributionNotice.classList.add('attribution');
+attributionNotice.textContent = "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.";
 
 async function displayChapterText() {
     chapterContainer.innerHTML = "";
-    const switcherContainer = document.createElement('div');
-    switcherContainer.classList.add('switcher-container');
-    const switcher = document.createElement('img');
-    switcher.classList.add("theme-switcher");
-    switcher.src = theme == 'dark' ? "assets/sun.png" : "assets/moon.png";
-    switcher.addEventListener('click', function () {
-        if (theme == "dark") {
-            switcher.src = "assets/moon.png";
-            theme = "light";
-        }
-        else {
-            switcher.src = "assets/sun.png";
-            theme = "dark";
-        }
-        chapterContainer.classList.toggle("light");
-        switcher.classList.toggle("light");
-    });
-    switcherContainer.appendChild(switcher);
-    chapterContainer.appendChild(switcherContainer);
-
     let chapterComponents = await BuildChapter(await GetChapterData());
     chapterComponents.forEach(item => {
         chapterContainer.append(item);
     })
+    chapterContainer.appendChild(attributionNotice);
 };
 
-// displayChapterText();
+displayChapterText();
 
 //#endregion Get Chapter Text
 

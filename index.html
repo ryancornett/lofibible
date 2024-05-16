@@ -22,21 +22,30 @@
                 <div class="selector">
                     <select id="book-selector"></select>
                     <select id="chapter-selector"></select>
-                    <span id="playback-rate-selector">1.00x</span>
                 </div>
 
-                <img src="assets/play.png" class="play-pause" onclick="handlePlayPause()" alt="Play or pause button" />
+                <div class="interactive-controls">
+                    <img src="assets/icons/restart.png" class="restart" alt="Restart" />
+                    <span id="playback-rate-selector">1.00x</span>
+                    <img src="assets/icons/sun.png" class="switcher" alt="Change text theme" />
+                </div>
+
+                <div class="play-controls">
+                    <img src="assets/icons/previous.png" class="previous-next previous" onclick="handlePreviousChapter()" alt="Previous" />
+                    <img src="assets/icons/play.png" class="play-pause" onclick="handlePlayPause()" alt="Play or pause" />
+                    <img src="assets/icons/next.png" class="previous-next next" onclick="handleNextChapter()" alt="Next" />
+                </div>
                 
                 <div class="lofi-container">
                     <div class="lofi-info">
-                        <span><a class="artist-link"><img src="assets/link.png" id="link-icon" alt="Link icon" /></a></span>
+                        <span><a class="artist-link"><img src="assets/icons/beats.png" id="link-icon" alt="Link icon" /></a></span>
                         <span id="song-title"></span>
                         <span> - </span>
                         <span id="song-artist"></span>
                     </div>
                     <div class="lofi-volume-wrapper">
-                        <label for="lofi-volume"><img onclick="handleQuickMute" id="lofi-volume-icon" src="assets/audible.png" alt="Volume icon" /></label>
-                        <input type="range" id="lofi-volume" min="0" max="100" value="30" />
+                        <label for="lofi-volume"><img onclick="handleQuickMute" id="lofi-volume-icon" src="assets/icons/medium.png" alt="Volume icon" /></label>
+                        <input type="range" id="lofi-volume" min="0" max="60" value="35" />
                     </div>
                 </div>
             </div>
@@ -58,7 +67,7 @@
                 <img src="assets/icons/contact.png" class="footer-icon" alt="Leave feedback" title="Leave feedback" />
             </a>
             <a href="https://linktr.ee/ryancornett" target="_blank">
-                <img src="assets/icons/link.png" class="footer-icon" alt="About the site creator" title="About the site creator" />
+                <img src="assets/icons/link.png" class="footer-icon" alt="About the site creator" title="Site creator's links" />
             </a>
         </footer>
 
@@ -68,9 +77,13 @@
             </div>
             <div class="why-bsb">
                 <h4>Why the Berean Standard Bible translation?</h4>
-                <p>The Berean Standard Bible (BSB) is in the public domain and licensing is not required. The BSB is free to share--there is no limit to how many verses/chapters may be distributed or what percentage of a work the words of the BSB may make up.
-                </p>
-                <p> Such an excellent translation that encourages sharing should be celebrated.</p>
+                <p>The Berean Standard Bible (BSB) is in the public domain and licensing is not required. The BSB is free to share--there is no limit to how many verses/chapters may be distributed or what percentage of a work the words of the BSB may make up.</p>
+                <p>Since 60% of the world's languages do not have a translation that may be freely shared, such openness with God's Word should be appreciated and encouraged.</p>
+                <p>Even the Bible audio is made available freely to whomever wants it.</p>
+
+                <h4>Why Lofi/Chill Beats?</h4>
+                <p>This relaxing genre is a favorite backing track for quite a few folks as they go about their day and work or relax around the house. Now you can do all that with the Holy Word of God a part of it too.</p>
+                <p>And who knows? Maybe someday soon thie site can branch out to include classical music, Celtic tunes, or Bluegrass.</p>
             </div>
         </dialog>
 

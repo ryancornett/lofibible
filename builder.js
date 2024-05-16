@@ -39,7 +39,9 @@ function HandleHebrewSubtitle(item) {
     let hebrewSubtitle = document.createElement('h5');
     hebrewSubtitle.classList.add('hebrew-subtitle');
     for (let i = 0; i < item.content.length; i++) {
-        hebrewSubtitle.textContent += item.content[i].text;
+        if (item.content[i].text) {
+            hebrewSubtitle.textContent += `${item.content[i].text} `;
+        }
     }
     verses.push(hebrewSubtitle);
 };

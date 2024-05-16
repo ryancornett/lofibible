@@ -256,7 +256,7 @@ input[type=range]::-ms-thumb {
 
 .theme-switcher:hover, .restart:hover {
     filter: invert(1) drop-shadow(0 0 15px #f8ca11);
-    transform: rotate(-225deg);
+    transform: rotate(315deg);
     transition: all ease-in-out 400ms;
 }
 

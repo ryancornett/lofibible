@@ -80,7 +80,13 @@ switcher.addEventListener('click', function () {
 //#endregion interactive controls
 
 //#region lofiPlayer
-let lofiIndex = 0;
+function GetRandomLofiIndex(current) {
+    let randomIndex = Math.floor(Math.random() * lofi.length - 1);
+    if (randomIndex == current) { GetRandomLofiIndex(current); }
+    else { return randomIndex; }
+}
+
+let lofiIndex = Math.floor(Math.random() * lofi.length - 1);
 const lofiPlayer = document.getElementById('lofi-player');
 lofiPlayer.volume = 0.3;
 const lofiVolumeSelector = document.querySelector('#lofi-volume');
@@ -94,8 +100,7 @@ songTitle.textContent = lofi[lofiIndex].title;
 songArtist.textContent = lofi[lofiIndex].artist;
 
 lofiPlayer.addEventListener("ended", function () {
-    if (lofiIndex == lofi.length -1) { lofiIndex = 0; }
-    else { lofiIndex++; }
+    lofiIndex = GetRandomLofiIndex(lofiIndex);
     lofiPlayer.src = lofi[lofiIndex].file;
     lofiPlayer.play();
     songTitle.textContent = lofi[lofiIndex].title;

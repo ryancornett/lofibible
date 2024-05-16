@@ -1429,10 +1429,70 @@ const audio = {
       source: "https://pixabay.com/music/beats-close-study-relax-chillhop-calm-study-lofi-123089/"
     },
     {
-      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/close-study-relax-chillhop-calm-study-lofi-123089.mp3",
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/coverless-book-lofi-186307.mp3",
       artist: "MYAUDIOVISION",
       title: "Coverless Book",
       source: "https://pixabay.com/music/beats-coverless-book-lofi-186307/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/deep-lofi-vibes-205062.mp3",
+      artist: "xethrocc",
+      title: "deep - lofi vibes",
+      source: "https://pixabay.com/music/beats-deep-lofi-vibes-205062/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/empty-beach-sunset-lofi-207239.mp3",
+      artist: "CalvinClavier",
+      title: "Empty Beach - Sunset LoFi",
+      source: "https://pixabay.com/music/beats-empty-beach-sunset-lofi-207239/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/joy-206717.mp3",
+      artist: "lofizoo_music",
+      title: "Joy",
+      source: "https://pixabay.com/music/beats-joy-206717/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/lofi-rain-198277.mp3",
+      artist: "saavane",
+      title: "Lofi Rain",
+      source: "https://pixabay.com/music/beats-lofi-rain-198277/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/lost-ambient-lofi-60s-10821.mp3",
+      artist: "Lesfm",
+      title: "Lost Ambient Lofi 60s",
+      source: "https://pixabay.com/music/beats-lost-ambient-lofi-60s-10821/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/lost-ambient-lofi-60s-10821.mp3",
+      artist: "CalvinClavier",
+      title: "no more stars",
+      source: "https://pixabay.com/music/beats-no-more-stars-207237/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/once-in-paris-168895.mp3",
+      artist: "Pumpupthemind",
+      title: "Once In Paris",
+      source: "https://pixabay.com/music/beats-once-in-paris-168895/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/royalty-free-use-lofi-chill-background-music-dreamscape-201679.mp3",
+      artist: "Lidérc",
+      title: "Background Music Dreamscape",
+      source: "https://pixabay.com/music/beats-royalty-free-use-lofi-chill-background-music-dreamscape-201679/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/sleepy-cat-118974.mp3",
+      artist: "Lofi_hour",
+      title: "Sleepy cat",
+      source: "https://pixabay.com/music/beats-sleepy-cat-118974/"
+    },
+    {
+      file: "https://github.com/ryancornett/lofiaudiofiles/raw/main/sunset-vibes-lo-fichillhop-9503.mp3",
+      artist: "Pixabay",
+      title: "Sunset Vibes",
+      source: "https://pixabay.com/music/beats-sunset-vibes-lo-fichillhop-9503/"
     },
   
   ];

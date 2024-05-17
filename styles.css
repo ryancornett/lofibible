@@ -2,16 +2,12 @@
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
     line-height: 1.5;
     font-weight: 400;
-  
-    color-scheme: light dark;
     color: rgba(255, 255, 255, 0.87);
     background-color: #242424;
-  
     font-synthesis: none;
     text-rendering: optimizeLegibility;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-
     --indent: 2rem;
 }
 
@@ -19,6 +15,7 @@ body {
     margin: 0;
     min-width: 320px;
     min-height: 100vh;
+    max-width: 100vw;
 }
 
 h1 {
@@ -31,7 +28,7 @@ h1 {
     top: 0;
     left: 0;
     z-index: 1;
-    background-image: url('assets/headphones.png');
+    background-image: url('assets/headphones.webp');
     filter: brightness(0.45) blur(5px);
     -webkit-filter: brightness(0.45) blur(5px);
     height: 100vh;
@@ -40,13 +37,11 @@ h1 {
 }
 
 .app {
-    height: calc(100vh - 1.5rem);
     position: relative;
     z-index: 100;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 5vw;
+    flex-direction: column;
+    gap: 2vw;
     transition: all ease-in-out 150ms;
 }
 
@@ -57,32 +52,47 @@ h1 {
 }
 
 .left {
+    height: 100svh;
     display: flex;
     flex-direction: column;
+    justify-content: center;
     align-items: center;
-    gap: 0.5rem;
 }
 
 .selector {
     display: flex;
-    flex-direction: column;
     gap: 0.5rem;
+    flex-direction: column;
 }
 
 #book-selector, #chapter-selector {
-    font-size: 0.9rem;
+    font-size: 1.1rem;
 }
 
 .interactive-controls {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 25%;
-    margin: 1rem 0;
+    gap: 45%;
+    margin: 2rem 0;
+}
+
+.theme-switcher, .restart {
+    width: clamp(2.75vw, 4rem, 8vw);
+    cursor: pointer;
+    transform: rotate(-45deg);
+    transition: all ease-in-out 400ms;
+    filter: invert(1);
+}
+
+.theme-switcher:hover, .restart:hover {
+    filter: invert(1) drop-shadow(0 0 15px #f8ca11);
+    transform: rotate(315deg);
+    transition: all ease-in-out 400ms;
 }
 
 #playback-rate-selector {
-    font-size: 0.8rem;
+    font-size: 1rem;
     cursor: pointer;
     user-select: none;
     transition: all ease-in-out 400ms;
@@ -96,14 +106,15 @@ h1 {
     display: flex;
     align-items: center;
     justify-content: center;
-    gap: 25%;
+    gap: 50%;
     margin: 1rem 0;
 }
 
 .play-pause {
     cursor: pointer;
     filter: invert(1);
-    width: clamp(2.25vw, 3.5rem, 4.5vw);
+    width: clamp(3.25vw, 8rem, 9vw);
+    height: clamp(3.25vw, 8rem, 9vw);
     transition: all ease-in-out 400ms;
 }
 
@@ -112,22 +123,21 @@ h1 {
     transition: all ease-in-out 400ms;
 }
 
-.previous-next, .auto-scroll {
+.previous-next {
     cursor: pointer;
     filter: invert(1);
-    height: clamp(1rem, 2rem, 3.5vw);
-    width: clamp(1rem, 2rem, 3.5vw);
+    height: clamp(1.75rem, 2rem, 6vw);
+    width: clamp(1.75rem, 2rem, 6vw);
     transition: all ease-in-out 400ms;
 }
 
 .lofi-info {
-    font-size: 0.8rem;
+    font-size: 0.9rem;
     transition: all ease-in-out 350ms;
 }
 
 #song-title {
     color: rgb(239, 215, 118);
-    text-wrap: nowrap;
 }
 
 #song-artist {
@@ -136,15 +146,17 @@ h1 {
 
 .lofi-info, .lofi-volume-wrapper {
     display: flex;
+    justify-content: center;
     align-items: center;
     gap: 0.5rem;
 }
 
 #link-icon, #lofi-volume-icon {
     filter: invert(1);
-    width: clamp(1.75vw, 1.5rem, 2vw);
+    width: clamp(1.75vw, 4.5rem, 8vw);
     transition: all ease-in-out 400ms;
     cursor: pointer;
+    padding: 0.75rem;
 }
 
 input[type=range] {
@@ -230,34 +242,20 @@ input[type=range]::-ms-thumb {
 }  
 
 .chapter-container {
+    padding: 0 2.5rem 4.5rem 2.5rem;
+    align-self: center;
     background-color: #21211e;
     border: solid 2px rgba(88, 90, 77, 0.75);
     z-index: 100;
-    width: 60ch;
-    height: 70vh;
+    width: 90svw;
+    height: 100svh;
     color: azure;
-    padding: 0 2.5rem 1.5rem 2.5rem;
     overflow-y: scroll;
-    border-radius: 2%;
 }
 
 .chapter-container.light {
     background-color: white;
     color: #21211e;
-}
-
-.theme-switcher, .restart {
-    width: clamp(1.75vw, 2rem, 3vw);
-    cursor: pointer;
-    transform: rotate(-45deg);
-    transition: all ease-in-out 400ms;
-    filter: invert(1);
-}
-
-.theme-switcher:hover, .restart:hover {
-    filter: invert(1) drop-shadow(0 0 15px #f8ca11);
-    transform: rotate(315deg);
-    transition: all ease-in-out 400ms;
 }
 
 .verse-heading {
@@ -309,12 +307,13 @@ input[type=range]::-ms-thumb {
 }
 
 dialog {
-    width: 50vw;
+    max-height: 65svh;
+    width: 65svw;
     background-color: #21211e;
     border: solid 2px rgba(88, 90, 77, 0.75);
     border-radius: 2%;
     color: azure;
-    padding: 3rem;
+    padding: 2rem;
 }
 
 #close-info {
@@ -335,21 +334,22 @@ dialog {
 }
 
 #close-info > img {
-    height: clamp(0.9vw, 2rem, 2vw);
+    width: clamp(0.9vw, 2rem, 7vw);
+    height: clamp(0.9vw, 2rem, 7vw);
     cursor: pointer;
 }
 
 footer {
+    width: 100svw;
     position: fixed;
     bottom: 0;
     z-index: 200;
     background-color: #21211e;
     border: solid 2px rgba(88, 90, 77, 0.75);
     display: flex;
-    justify-content: flex-end;
+    justify-content: center;
     align-items: center;
     gap: 1.25rem;
-    padding: 0 1rem;
 }
 
 .footer-icon {
@@ -365,17 +365,103 @@ footer {
     transition: all ease-in-out 400ms;
 }
 
-/* footer > div {
-    margin: 0 2rem;
+#pixabay-license, #pixabay-license:link, #pixabay-license:visited, #pixabay-license:active {
+    color:#f8ca11;
+    font-weight: bold;
 }
 
-.why-bsb > p, .footer-links {
-    text-align: left;
-} */
-
-/* @media (prefers-color-scheme: light) {
-:root {
-    color: #213547;
-    background-color: #e9f2fe;
+#pixabay-license:hover {
+    color:rgb(239, 215, 118);
+    font-weight: bold;
 }
-} */
+
+
+@media only screen and (min-width: 960px) {
+    .app {
+        height: 100vh;
+        flex-direction: row;
+        justify-content: center;
+        align-items: center;
+        gap: 5vw;
+    }
+    .left {
+        height: auto;
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+    }
+
+    #book-selector, #chapter-selector {
+        font-size: 0.9rem;
+    }
+
+    .interactive-controls {
+        margin: 1rem 0;
+    }
+    
+    #playback-rate-selector {
+        font-size: 0.9rem;
+    }
+
+    .theme-switcher, .restart {
+        width: clamp(1.75vw, 2rem, 3vw);
+    }
+
+    .play-controls {
+        gap: 25%;
+    }
+
+    .play-pause {
+        width: clamp(2.25vw, 3.5rem, 4.5vw);
+        height: clamp(2.25vw, 3.5rem, 4.5vw);
+    }
+
+    .previous-next {
+        height: clamp(1rem, 2rem, 3.5vw);
+        width: clamp(1rem, 2rem, 3.5vw);
+    }
+    
+    .lofi-info {
+        font-size: 0.8rem;
+    }
+    
+    .lofi-info, .lofi-volume-wrapper {
+        gap: 0.5rem;
+    }
+    
+    #link-icon, #lofi-volume-icon {
+        width: clamp(1.75vw, 1.5rem, 2vw);
+        padding: 0;
+    }
+
+    .chapter-container {
+        padding: 0 2.5rem 1.5rem 2.5rem;
+        align-self: unset;
+        width: 60ch;
+        height: 70vh;
+        border-radius: 2%;
+    }
+
+    footer {
+        width: unset;
+        padding: 0 1rem;
+    }
+
+    dialog {
+        width: 50vw;
+        padding: 3rem;
+    }
+
+    #close-info > img {
+        width: clamp(0.9vw, 2rem, 3vw);
+        height: clamp(0.9vw, 2rem, 3vw);
+        cursor: pointer;
+    }
+
+  }
+
+  /* @media screen and (orientation: landscape) {
+    body {
+      display: none;
+    }
+  } */

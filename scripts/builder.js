@@ -57,9 +57,8 @@ function HandleVerse(item) {
     let versePart = document.createElement('span');
     versePart.classList.add('verse-part');
 
-
     for (let i = 0; i < item.content.length; i++) {
-        let br = document.createElement('br');
+        let p = document.createElement('p');
         if (typeof item.content[i] === 'string' && item.content[i].includes("BOOK")) {
             continue;
         } else if (typeof item.content[i] === 'string') {
@@ -68,12 +67,12 @@ function HandleVerse(item) {
             let poemLine = document.createElement('span');
             let indent = item.content[i].poem;
             poemLine.classList.add(`indent-${indent}`);
-            poemLine.textContent = `${item.content[i].text}`;
+            poemLine.textContent = `${item.content[i].text} `;
             versePart.appendChild(poemLine);
             if (item.content[i+1] && item.content[i+1].noteId) {
                 continue;
             } else {
-                versePart.appendChild(br);
+                versePart.appendChild(p);
             }
 
             if (item.content[i-1] && item.content[i-1].noteId) {

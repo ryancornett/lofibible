@@ -1,5 +1,6 @@
 import { booksList, chaptersList, audio, lofi, apiRef, rate, sample } from "./data.js";
 import BuildChapter from "./builder.js";
+import Footer from "./footer.js";
 
 //#region bookSelector
 const bookSelector = document.getElementById('book-selector');
@@ -64,14 +65,14 @@ function setPlaybackRate() {
 let theme = "dark";
 const switcher = document.querySelector('.switcher');
 switcher.classList.add("theme-switcher");
-switcher.src = theme == 'dark' ? "assets/icons/sun.png" : "assets/icons/moon.png";
+switcher.src = theme == 'dark' ? "assets/icons/sun.webp" : "assets/icons/moon.webp";
 switcher.addEventListener('click', function () {
     if (theme == "dark") {
-        switcher.src = "assets/icons/moon.png";
+        switcher.src = "assets/icons/moon.webp";
         theme = "light";
     }
     else {
-        switcher.src = "assets/icons/sun.png";
+        switcher.src = "assets/icons/sun.webp";
         theme = "dark";
     }
     chapterContainer.classList.toggle("light");
@@ -101,6 +102,9 @@ songArtist.textContent = lofi[lofiIndex].artist;
 
 lofiPlayer.addEventListener("ended", function () {
     lofiIndex = GetRandomLofiIndex(lofiIndex);
+    console.log(lofiIndex);
+    console.log(lofi);
+    console.log(lofi[0].file);
     lofiPlayer.src = lofi[lofiIndex].file;
     lofiPlayer.play();
     songTitle.textContent = lofi[lofiIndex].title;
@@ -113,10 +117,10 @@ const lofiVolumeIcon = document.getElementById('lofi-volume-icon');
 
 lofiVolumeSelector.addEventListener('change', function () {
     lofiPlayer.volume = lofiVolumeSelector.value/100;
-    if (lofiVolumeSelector.value <= 5) { lofiVolumeIcon.src = "assets/icons/muted.png"; }
-    else if (lofiVolumeSelector.value > 5 && lofiVolumeSelector.value <= 20) { lofiVolumeIcon.src = "assets/icons/quiet.png"; }
-    else if (lofiVolumeSelector.value > 20 && lofiVolumeSelector.value <= 40) { lofiVolumeIcon.src = "assets/icons/medium.png"; }
-    else { lofiVolumeIcon.src = "assets/icons/loud.png"; }
+    if (lofiVolumeSelector.value <= 5) { lofiVolumeIcon.src = "assets/icons/muted.webp"; }
+    else if (lofiVolumeSelector.value > 5 && lofiVolumeSelector.value <= 20) { lofiVolumeIcon.src = "assets/icons/quiet.webp"; }
+    else if (lofiVolumeSelector.value > 20 && lofiVolumeSelector.value <= 40) { lofiVolumeIcon.src = "assets/icons/medium.webp"; }
+    else { lofiVolumeIcon.src = "assets/icons/loud.webp"; }
 })
 
 lofiVolumeIcon.onclick = function handleQuickMute() {
@@ -173,9 +177,11 @@ previousButton.onclick = function handlePreviousChapter() {
     }
     else if (chapterSelector.value == 1) {
         bookSelector.selectedIndex = parseInt(bookSelector.value) - 1;
+        bookSelector.dispatchEvent(new Event('change'));
         chapterSelector.selectedIndex = chaptersList[bookSelector.value];
     }
     else {
+
         chapterSelector.selectedIndex = chapterSelector.selectedIndex - 1;
     }
     chapterSelector.dispatchEvent(new Event('change'));
@@ -192,12 +198,12 @@ function playPauseLogic() {
     if (isPlaying) {
         lofiPlayer.play();
         biblePlayer.play();
-        playPauseButton.src = "assets/icons/pause.png";
+        playPauseButton.src = "assets/icons/pause.webp";
     }
     else {
         lofiPlayer.pause();
         biblePlayer.pause();
-        playPauseButton.src = "assets/icons/play.png";
+        playPauseButton.src = "assets/icons/play.webp";
     }
 };
 
@@ -231,6 +237,7 @@ async function GetChapterData() {
         const chapter = await response.json();
         return chapter;
     } catch (error) {
+        console.log(error);
         chapterContainer.textContent = "An error occurred. Please try again.";
         return null;
     }
@@ -242,30 +249,20 @@ attributionNotice.textContent = "The Holy Bible, Berean Standard Bible, BSB is p
 
 async function displayChapterText() {
     chapterContainer.innerHTML = "";
-    let chapterComponents = await BuildChapter(await GetChapterData());
-    chapterComponents.forEach(item => {
-        chapterContainer.append(item);
-    })
-    chapterContainer.appendChild(attributionNotice);
+    try {
+        let chapterComponents = await BuildChapter(await GetChapterData());
+        chapterComponents.forEach(item => {
+            chapterContainer.append(item);
+        })
+        chapterContainer.appendChild(attributionNotice);
+    } catch (error) {
+        console.log(error);
+        chapterContainer.textContent = "An error occurred. Please try again.";
+    }
 };
 
 displayChapterText();
 
 //#endregion Get Chapter Text
 
-//#region Footer
-
-const app = document.querySelector('.app');
-const infoModal = document.getElementById('info-modal');
-const infoClickable = document.getElementById('info-clickable');
-const closeInfo = document.getElementById('close-info');
-infoClickable.addEventListener('click', function () {
-    infoModal.showModal();
-    app.classList.add('dialog-opened');
-})
-closeInfo.addEventListener('click', function () {
-    infoModal.close();
-    app.classList.remove('dialog-opened');
-})
-
-//#endregion Footer
+Footer();

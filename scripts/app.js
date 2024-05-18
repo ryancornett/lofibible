@@ -90,7 +90,9 @@ function GetRandomLofiIndex(current) {
 
 let lofiIndex = Math.floor(Math.random() * lofi.length - 1);
 const lofiPlayer = document.getElementById('lofi-player');
-lofiPlayer.volume = 0.3;
+localStorage.setItem("lovo", "0.25");
+lofiPlayer.volume = parseFloat(localStorage.getItem("lovo"));
+console.log(localStorage.getItem("lovo"));
 lofiPlayer.src = lofi[lofiIndex].file;
 
 const artistLink = document.querySelector('.artist-link');
@@ -114,7 +116,8 @@ const lofiVolumeIcon = document.getElementById('lofi-volume-icon');
 const lofiVolumeSelector = document.querySelector('#lofi-volume');
 
 lofiVolumeSelector.addEventListener('change', function () {
-    lofiPlayer.volume = lofiVolumeSelector.value;
+    localStorage.setItem("lovo", lofiVolumeSelector.value);
+    lofiPlayer.volume = localStorage.getItem("lovo");
     if (lofiVolumeSelector.value <= 0.05) { lofiVolumeIcon.src = "assets/icons/muted.webp"; }
     else if (lofiVolumeSelector.value > 0.05 && lofiVolumeSelector.value <= 0.2) { lofiVolumeIcon.src = "assets/icons/quiet.webp"; }
     else if (lofiVolumeSelector.value > 0.2 && lofiVolumeSelector.value <= 0.4) { lofiVolumeIcon.src = "assets/icons/medium.webp"; }
@@ -129,10 +132,12 @@ lofiVolumeSelector.addEventListener('touchend', function() {
 
 lofiVolumeIcon.onclick = function handleQuickMute() {
     if (lofiVolumeSelector.value < 0.06) {
-        lofiVolumeSelector.value = 0.25;
+        localStorage.setItem("lovo", 0.25);
+        lofiVolumeSelector.value = localStorage.getItem("lovo");
     }
     else {
-        lofiVolumeSelector.value = 0;
+        localStorage.setItem("lovo", 0);
+        lofiVolumeSelector.value = localStorage.getItem("lovo");
     }
     lofiVolumeSelector.dispatchEvent(new Event('change'));
 }

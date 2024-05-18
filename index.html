@@ -31,9 +31,9 @@
                 </div>
 
                 <div class="play-controls">
-                    <img src="assets/icons/previous.webp" class="previous-next previous" onclick="handlePreviousChapter()" alt="Previous" />
-                    <img src="assets/icons/play.webp" class="play-pause" onclick="handlePlayPause()" alt="Play or pause" />
-                    <img src="assets/icons/next.webp" class="previous-next next" onclick="handleNextChapter()" alt="Next" />
+                    <img src="assets/icons/previous.webp" class="previous-next previous" alt="Previous" />
+                    <img src="assets/icons/play.webp" class="play-pause" alt="Play or pause" />
+                    <img src="assets/icons/next.webp" class="previous-next next" alt="Next" />
                 </div>
                 
                 <div class="lofi-container">
@@ -45,7 +45,7 @@
                     </div>
                     <div class="lofi-volume-wrapper">
                         <label for="lofi-volume"><img onclick="handleQuickMute" id="lofi-volume-icon" src="assets/icons/medium.webp" alt="Volume icon" /></label>
-                        <input type="range" id="lofi-volume" min="0" max="60" value="35" />
+                        <input type="range" id="lofi-volume" min="0" max="0.6" step="0.02" value="0.25" />
                     </div>
                 </div>
             </div>
@@ -56,7 +56,14 @@
         </div>
         
         <footer>
-            <h1>Lofi Audio Bible</h1>
+            <div class="adaptive-play-menu">
+                <div class="adaptive-play-controls">
+                    <img src="assets/icons/previous.webp" class="previous-next previous" alt="Previous" />
+                    <img src="assets/icons/play.webp" class="play-pause" alt="Play or pause" />
+                    <img src="assets/icons/next.webp" class="previous-next next" alt="Next" />
+                </div>
+                <h1>Lofi Audio Bible</h1>
+            </div>
             <div class="info-icon-wrapper">
                 <img src="assets/icons/info.webp" id="info-clickable" class="footer-icon" alt="About the site" title="About the site" />
             </div>

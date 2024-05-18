@@ -2290,6 +2290,12 @@ const sample = {
   };
 
 const cache = {};
+
+function UpdateCache(chapter) {
+  if (!cache[`${chapter.book.id}${chapter.chapter.number}`]) {
+      cache[`${chapter.book.id}${chapter.chapter.number}`] = chapter;
+  }
+};
   
-export { audio, booksList, chaptersList, lofi, apiRef, rate, cache };
+export { audio, booksList, chaptersList, lofi, apiRef, rate, cache, UpdateCache };
   

@@ -1,4 +1,4 @@
-import { booksList, chaptersList, audio, lofi, apiRef, rate, cache } from "./data.js";
+import { booksList, chaptersList, audio, lofi, apiRef, rate, cache, UpdateCache } from "./data.js";
 import BuildChapter from "./builder.js";
 import Footer from "./footer.js";
 
@@ -58,6 +58,7 @@ playbackRateSelector.addEventListener("click", function () {
     setPlaybackRate();
 });
 function setPlaybackRate() {
+    playbackRateSelector.textContent = "";
     playbackRateSelector.textContent = Object.keys(rate[selectedRate]);
     biblePlayer.playbackRate = Object.values(rate[selectedRate]);
 }
@@ -113,25 +114,25 @@ const lofiVolumeIcon = document.getElementById('lofi-volume-icon');
 const lofiVolumeSelector = document.querySelector('#lofi-volume');
 
 lofiVolumeSelector.addEventListener('change', function () {
-    lofiPlayer.volume = lofiVolumeSelector.value/100;
-    if (lofiVolumeSelector.value <= 5) { lofiVolumeIcon.src = "assets/icons/muted.webp"; }
-    else if (lofiVolumeSelector.value > 5 && lofiVolumeSelector.value <= 20) { lofiVolumeIcon.src = "assets/icons/quiet.webp"; }
-    else if (lofiVolumeSelector.value > 20 && lofiVolumeSelector.value <= 40) { lofiVolumeIcon.src = "assets/icons/medium.webp"; }
+    lofiPlayer.volume = lofiVolumeSelector.value;
+    if (lofiVolumeSelector.value <= 0.05) { lofiVolumeIcon.src = "assets/icons/muted.webp"; }
+    else if (lofiVolumeSelector.value > 0.05 && lofiVolumeSelector.value <= 0.2) { lofiVolumeIcon.src = "assets/icons/quiet.webp"; }
+    else if (lofiVolumeSelector.value > 0.2 && lofiVolumeSelector.value <= 0.4) { lofiVolumeIcon.src = "assets/icons/medium.webp"; }
     else { lofiVolumeIcon.src = "assets/icons/loud.webp"; }
 });
 
 lofiVolumeSelector.addEventListener('touchend', function() {
     lofiVolumeSelector.dispatchEvent(new Event('change'));
-    audioElement.muted = true;
-    audioElement.muted = false;
-  });
+    lofiPlayer.muted = true;
+    lofiPlayer.muted = false;
+});
 
 lofiVolumeIcon.onclick = function handleQuickMute() {
-    if (lofiVolumeSelector.value < 6) {
-        lofiVolumeSelector.value = 30
+    if (lofiVolumeSelector.value < 0.06) {
+        lofiVolumeSelector.value = 0.25;
     }
     else {
-        lofiVolumeSelector.value = 0
+        lofiVolumeSelector.value = 0;
     }
     lofiVolumeSelector.dispatchEvent(new Event('change'));
 }
@@ -166,29 +167,32 @@ function handleEndOfAllChaptersExceptLastChapter() {
     biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value];
 }
 
-const nextButton = document.querySelector('.next');
-nextButton.onclick = function handleNextChapter() {
-    biblePlayer.dispatchEvent(new Event('ended'));
-}
+const nextButton = document.querySelectorAll('.next');
+nextButton.forEach(btn => {
+    btn.addEventListener('click', () => {
+        biblePlayer.dispatchEvent(new Event('ended'));
+    })
+});
 
-const previousButton = document.querySelector('.previous');
-previousButton.onclick = function handlePreviousChapter() {
-    if (biblePlayer.src == audio["Genesis"][0]) { 
-        biblePlayer.src = audio["Revelation"][21];
-        bookSelector.selectedIndex = 65;
-        chapterSelector.selectedIndex = chaptersList[bookSelector.value];
-    }
-    else if (chapterSelector.value == 1) {
-        bookSelector.selectedIndex = parseInt(bookSelector.value) - 1;
-        bookSelector.dispatchEvent(new Event('change'));
-        chapterSelector.selectedIndex = chaptersList[bookSelector.value];
-    }
-    else {
-
-        chapterSelector.selectedIndex = chapterSelector.selectedIndex - 1;
-    }
-    chapterSelector.dispatchEvent(new Event('change'));
-}
+const previousButton = document.querySelectorAll('.previous');
+previousButton.forEach(btn => {
+    btn.addEventListener('click', () => {
+        if (biblePlayer.src == audio["Genesis"][0]) { 
+            biblePlayer.src = audio["Revelation"][21];
+            bookSelector.selectedIndex = 65;
+            chapterSelector.selectedIndex = chaptersList[bookSelector.value];
+        }
+        else if (chapterSelector.value == 1) {
+            bookSelector.selectedIndex = parseInt(bookSelector.value) - 1;
+            bookSelector.dispatchEvent(new Event('change'));
+            chapterSelector.selectedIndex = chaptersList[bookSelector.value];
+        }
+        else {
+            chapterSelector.selectedIndex = chapterSelector.selectedIndex - 1;
+        }
+        chapterSelector.dispatchEvent(new Event('change'));
+    })    
+});
 
 //#endregion biblePlayer
 
@@ -201,12 +205,16 @@ function playPauseLogic() {
     if (isPlaying) {
         lofiPlayer.play();
         biblePlayer.play();
-        playPauseButton.src = "assets/icons/pause.webp";
+        playPauseButton.forEach(btn => {
+            btn.src = "assets/icons/pause.webp";
+        });
     }
     else {
         lofiPlayer.pause();
         biblePlayer.pause();
-        playPauseButton.src = "assets/icons/play.webp";
+        playPauseButton.forEach(btn => {
+            btn.src = "assets/icons/play.webp";
+        });
     }
 };
 
@@ -219,11 +227,11 @@ async function playChapter() {
     setPlaybackRate();
 };
 
-const playPauseButton = document.querySelector('.play-pause');
+const playPauseButton = document.querySelectorAll('.play-pause');
+playPauseButton.forEach(btn => {
+    btn.addEventListener('click', playPauseLogic);
+});
 
-playPauseButton.onclick = function handlePlayPause() {
-    playPauseLogic();
-};
 //#endregion Play/Pause Logic
 
 //#region Get Chapter Text
@@ -256,22 +264,20 @@ async function displayChapterText() {
     let chapterComponents;
     if (cache[`${apiRef[bookSelector.value]}${chapterSelector.value}`]) {
         chapterComponents = await BuildChapter(cache[`${apiRef[bookSelector.value]}${chapterSelector.value}`]);
-        chapterComponents.forEach(item => {
-            chapterContainer.append(item);
-        })
-        chapterContainer.appendChild(attributionNotice);
-    } else {
+    }
+    else {
         try {
             chapterComponents = await BuildChapter(await GetChapterData());
-            chapterComponents.forEach(item => {
-                chapterContainer.append(item);
-            })
-            chapterContainer.appendChild(attributionNotice);
         } catch (error) {
             console.log(error);
             chapterContainer.textContent = "An error occurred. Please try again.";
         }
     }
+
+    chapterComponents.forEach(item => {
+        chapterContainer.append(item);
+    })
+    chapterContainer.appendChild(attributionNotice);
 };
 
 displayChapterText();
@@ -279,9 +285,3 @@ displayChapterText();
 //#endregion Get Chapter Text
 
 Footer();
-
-function UpdateCache(chapter) {
-    if (!cache[`${chapter.book.id}${chapter.chapter.number}`]) {
-        cache[`${chapter.book.id}${chapter.chapter.number}`] = chapter;
-    }
-};

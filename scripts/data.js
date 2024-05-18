@@ -2288,6 +2288,8 @@ const sample = {
       ]
     }
   };
+
+const cache = {};
   
-export { audio, booksList, chaptersList, lofi, apiRef, rate, sample };
+export { audio, booksList, chaptersList, lofi, apiRef, rate, cache };
   

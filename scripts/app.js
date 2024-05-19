@@ -1,6 +1,61 @@
-import { booksList, chaptersList, audio, lofi, apiRef, rate, cache, UpdateCache } from "./data.js";
+import { booksList, chaptersList, audio, lofi, hymns, apiRef, rate, cache, UpdateCache } from "./data.js";
 import BuildChapter from "./builder.js";
 import Footer from "./footer.js";
+
+//region TESTING
+
+
+
+// **********************************************************************88
+
+//region TESTING
+
+//#region lofiPlayer
+
+function GetRandomLofiIndex(current) {
+    let randomIndex = Math.floor(Math.random() * allTracks.length);
+    if (randomIndex == current) { GetRandomLofiIndex(current); }
+    else { return randomIndex; }
+};
+
+const lofiPlayer = new Audio();
+let allTracks = [];
+let lofiIndex;
+let artistLink;
+let songTitle;
+let songArtist;
+let gainNode;
+
+async function initLofiInfo() {
+    allTracks = [...lofi, ...hymns];
+    lofiIndex = Math.floor(Math.random() * allTracks.length);
+    lofiPlayer.src = allTracks[lofiIndex].file;
+    artistLink = document.querySelector('.artist-link');
+    artistLink.href = allTracks[lofiIndex].source;
+    songTitle = document.querySelector('#song-title');
+    songTitle.textContent = allTracks[lofiIndex].title;
+    songArtist = document.querySelector('#song-artist');
+    songArtist.textContent = allTracks[lofiIndex].artist
+
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    gainNode = audioContext.createGain();
+    const track = audioContext.createMediaElementSource(lofiPlayer);
+    track.connect(gainNode).connect(audioContext.destination);
+    gainNode.gain.value = 0.25;
+};
+
+await initLofiInfo();
+
+
+lofiPlayer.addEventListener("ended", function () {
+    lofiIndex = GetRandomLofiIndex(lofiIndex);
+    lofiPlayer.src = lofi[lofiIndex].file;
+    lofiPlayer.play();
+    songTitle.textContent = lofi[lofiIndex].title;
+    songArtist.textContent = lofi[lofiIndex].artist;
+});
+
+//#endregion lofiPlayer
 
 //#region bookSelector
 const bookSelector = document.getElementById('book-selector');
@@ -81,43 +136,12 @@ switcher.addEventListener('click', function () {
 
 //#endregion interactive controls
 
-//#region lofiPlayer
-function GetRandomLofiIndex(current) {
-    let randomIndex = Math.floor(Math.random() * lofi.length - 1);
-    if (randomIndex == current) { GetRandomLofiIndex(current); }
-    else { return randomIndex; }
-};
-
-let lofiIndex = Math.floor(Math.random() * lofi.length - 1);
-const lofiPlayer = document.getElementById('lofi-player');
-localStorage.setItem("lovo", "0.25");
-lofiPlayer.volume = parseFloat(localStorage.getItem("lovo"));
-console.log(localStorage.getItem("lovo"));
-lofiPlayer.src = lofi[lofiIndex].file;
-
-const artistLink = document.querySelector('.artist-link');
-const songTitle = document.querySelector('#song-title');
-const songArtist = document.querySelector('#song-artist');
-artistLink.href = lofi[lofiIndex].source;
-songTitle.textContent = lofi[lofiIndex].title;
-songArtist.textContent = lofi[lofiIndex].artist;
-
-lofiPlayer.addEventListener("ended", function () {
-    lofiIndex = GetRandomLofiIndex(lofiIndex);
-    lofiPlayer.src = lofi[lofiIndex].file;
-    lofiPlayer.play();
-    songTitle.textContent = lofi[lofiIndex].title;
-    songArtist.textContent = lofi[lofiIndex].artist;
-});
-//#endregion lofiPlayer
-
 //#region lofiVolumeIcon
 const lofiVolumeIcon = document.getElementById('lofi-volume-icon');
 const lofiVolumeSelector = document.querySelector('#lofi-volume');
 
 lofiVolumeSelector.addEventListener('change', function () {
-    localStorage.setItem("lovo", lofiVolumeSelector.value);
-    lofiPlayer.volume = localStorage.getItem("lovo");
+    gainNode.gain.value = lofiVolumeSelector.value;
     if (lofiVolumeSelector.value <= 0.05) { lofiVolumeIcon.src = "assets/icons/muted.webp"; }
     else if (lofiVolumeSelector.value > 0.05 && lofiVolumeSelector.value <= 0.2) { lofiVolumeIcon.src = "assets/icons/quiet.webp"; }
     else if (lofiVolumeSelector.value > 0.2 && lofiVolumeSelector.value <= 0.4) { lofiVolumeIcon.src = "assets/icons/medium.webp"; }
@@ -132,12 +156,12 @@ lofiVolumeSelector.addEventListener('touchend', function() {
 
 lofiVolumeIcon.onclick = function handleQuickMute() {
     if (lofiVolumeSelector.value < 0.06) {
-        localStorage.setItem("lovo", 0.25);
-        lofiVolumeSelector.value = localStorage.getItem("lovo");
+        lofiVolumeSelector.value = 0.25;
+        gainNode.gain.value = 0.25;
     }
     else {
-        localStorage.setItem("lovo", 0);
-        lofiVolumeSelector.value = localStorage.getItem("lovo");
+        lofiVolumeSelector.value = 0;
+        gainNode.gain.value = 0;
     }
     lofiVolumeSelector.dispatchEvent(new Event('change'));
 }

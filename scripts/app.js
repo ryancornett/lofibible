@@ -24,9 +24,10 @@ let lofiIndex;
 let artistLink;
 let songTitle;
 let songArtist;
+const audioContext = new (window.AudioContext || window.webkitAudioContext)();
 let gainNode;
 
-async function initLofiInfo() {
+async function initializeLofiResources() {
     allTracks = [...lofi, ...hymns];
     lofiIndex = Math.floor(Math.random() * allTracks.length);
     lofiPlayer.src = allTracks[lofiIndex].file;
@@ -35,17 +36,13 @@ async function initLofiInfo() {
     songTitle = document.querySelector('#song-title');
     songTitle.textContent = allTracks[lofiIndex].title;
     songArtist = document.querySelector('#song-artist');
-    songArtist.textContent = allTracks[lofiIndex].artist
-
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    songArtist.textContent = allTracks[lofiIndex].artist;
     gainNode = audioContext.createGain();
     const track = audioContext.createMediaElementSource(lofiPlayer);
     track.connect(gainNode).connect(audioContext.destination);
     gainNode.gain.value = 0.25;
+    console.log("clicked");
 };
-
-await initLofiInfo();
-
 
 lofiPlayer.addEventListener("ended", function () {
     lofiIndex = GetRandomLofiIndex(lofiIndex);
@@ -229,7 +226,8 @@ previousButton.forEach(btn => {
 
 let isPlaying = false;
 
-function playPauseLogic() {
+async function playPauseLogic() {
+    if (lofiIndex == null) { await initializeLofiResources(); }
     isPlaying = !isPlaying;
     if (isPlaying) {
         lofiPlayer.play();

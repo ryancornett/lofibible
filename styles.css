@@ -1,5 +1,6 @@
 :root {
     font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
+    box-sizing: border-box;
     line-height: 1.5;
     font-weight: 400;
     color: rgba(255, 255, 255, 0.87);
@@ -13,7 +14,7 @@
 
 body {
     margin: 0;
-    min-width: 320px;
+    /* min-width: 320px; */
     min-height: 100vh;
     max-width: 100svw;
     overflow-x: hidden;
@@ -138,6 +139,14 @@ h1 {
     transition: all ease-in-out 400ms;
 }
 
+.lofi-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    max-width: 90svw;
+}
+
 .lofi-info {
     font-size: 0.9rem;
     transition: all ease-in-out 350ms;
@@ -159,6 +168,10 @@ h1 {
     gap: 0.5rem;
 }
 
+.lofi-info > span, .lofi-volume-wrapper > label {
+    margin-left: -0.5rem;
+}
+
 .track-info {
     display: flex;
     flex-direction: column;
@@ -177,6 +190,55 @@ h1 {
     cursor: pointer;
     padding: 0.75rem;
 }
+
+.playlist-selector {
+    color: #45403e;
+    user-select: none;
+  }
+  .playlist-selector > span {
+    -webkit-text-stroke-width: 0.25px;
+    -webkit-text-stroke-color: #333;
+    font-size: 0.8rem;
+    margin-right: 0.3rem;
+    user-select: none;
+    cursor: pointer;
+    transition: all ease 200ms;
+  }
+  .playlist-selector:hover {
+    color: #696964;
+    text-shadow: 0 0 10px #ccc;
+    transition: all ease 200ms;
+  }
+  .playlist-selector > span.selected {
+    animation: neon .08s ease-in-out infinite alternate;
+    color: azure;
+    transition: all ease 200ms;
+  }
+  .playlist-selector > span.selected:hover {
+    color: #ccc;
+    transition: all ease 200ms;
+  }
+  
+  @keyframes neon {
+    from {
+      text-shadow:
+      0 0 6px rgba(202,228,225,0.92),
+      0 0 30px rgba(202,228,225,0.34),
+      0 0 12px rgba(210,220,90,0.52),
+      0 0 21px rgba(180,192,110,0.92),
+      0 0 34px rgba(240,225,90,0.78),
+      0 0 54px rgba(247,250,75,0.92);
+    }
+    to {
+      text-shadow:
+      0 0 6px rgba(202,228,165,0.98),
+      0 0 30px rgba(202,228,165,0.42),
+      0 0 12px rgba(170,192,85,0.58),
+      0 0 22px rgba(230,250,85,0.84),
+      0 0 38px rgba(160,192,85,0.88),
+      0 0 60px rgba(250,225,85,1);
+    }
+  }
 
 input[type=range] {
     height: 25px;
@@ -258,7 +320,12 @@ input[type=range]::-ms-thumb {
     border-radius: 18px;
     background: #F8CA11;
     cursor: pointer;
-}  
+} 
+
+#timer {
+    font-size: 0.75rem;
+    margin-bottom: 0.35rem;
+}
 
 .chapter-container {
     padding: 0 2.5rem 4.5rem 2.5rem;
@@ -266,7 +333,7 @@ input[type=range]::-ms-thumb {
     background-color: #21211e;
     border: solid 2px rgba(88, 90, 77, 0.75);
     z-index: 100;
-    max-width: 100svw;
+    max-width: 99svw;
     height: 100svh;
     color: azure;
     overflow-y: scroll;
@@ -359,8 +426,10 @@ dialog {
 }
 
 footer {
-    width: 100svw;
+    max-width: 100svw;
     position: fixed;
+    left: 0;
+    right: 0;
     bottom: 0;
     z-index: 200;
     background-color: #21211e;
@@ -393,7 +462,7 @@ footer {
 }
 
 #pixabay-license, #pixabay-license:link, #pixabay-license:visited, #pixabay-license:active {
-    color:#f8ca11;
+    color:#f8e911;
     font-weight: bold;
 }
 
@@ -428,6 +497,10 @@ footer {
         gap: 0.5rem;
     }
 
+    #timer {
+        margin-bottom: -0.35rem;
+    }
+
     #book-selector, #chapter-selector {
         font-size: 0.9rem;
     }
@@ -436,6 +509,10 @@ footer {
         max-width: unset;
         margin: 1rem 0;
         gap: 40%;
+    }
+
+    .lofi-container {
+        max-width: unset;
     }
     
     #playback-rate-selector {
@@ -477,13 +554,16 @@ footer {
     .chapter-container {
         padding: 0 2.5rem 1.5rem 2.5rem;
         align-self: unset;
+        min-width: unset;
+        max-width: unset;
         width: 60ch;
         height: 70vh;
         border-radius: 2%;
     }
 
     footer {
-        width: unset;
+        max-width: unset;
+        right: unset;
         padding: 0 1rem;
     }
 
@@ -499,9 +579,3 @@ footer {
     }
 
   }
-
-  /* @media screen and (orientation: landscape) {
-    body {
-      display: none;
-    }
-  } */

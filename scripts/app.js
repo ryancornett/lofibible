@@ -1,55 +1,83 @@
-import { booksList, chaptersList, audio, lofi, hymns, apiRef, rate, cache, UpdateCache } from "./data.js";
+import { booksList, chaptersList, audio, lofi, hymns, apiRef, rates, cache, UpdateCache } from "./data.js";
 import BuildChapter from "./builder.js";
 import Footer from "./footer.js";
+import Theme from "./theme.js";
 
-//region TESTING
-
-
-
-// **********************************************************************88
-
-//region TESTING
-
-//#region lofiPlayer
-
-function GetRandomLofiIndex(current) {
-    let randomIndex = Math.floor(Math.random() * allTracks.length);
-    if (randomIndex == current) { GetRandomLofiIndex(current); }
+async function GetRandomLofiIndex(current) {
+    let randomIndex = Math.floor(Math.random() * playlist.length);
+    if (randomIndex == current) { return await GetRandomLofiIndex(current); }
     else { return randomIndex; }
 };
 
 const lofiPlayer = new Audio();
-let allTracks = [];
 let lofiIndex;
 let artistLink;
 let songTitle;
 let songArtist;
 const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+const track = audioContext.createMediaElementSource(lofiPlayer);
 let gainNode;
+let chosenPlaylist = "all";
+let playlist = SetPlaylist(chosenPlaylist);
 
 async function initializeLofiResources() {
-    allTracks = [...lofi, ...hymns];
-    lofiIndex = Math.floor(Math.random() * allTracks.length);
-    lofiPlayer.src = allTracks[lofiIndex].file;
+    lofiIndex = await GetRandomLofiIndex(lofiIndex);
+    lofiPlayer.src = playlist[lofiIndex].file;
     artistLink = document.querySelector('.artist-link');
-    artistLink.href = allTracks[lofiIndex].source;
+    artistLink.href = playlist[lofiIndex].source;
     songTitle = document.querySelector('#song-title');
-    songTitle.textContent = allTracks[lofiIndex].title;
+    songTitle.textContent = playlist[lofiIndex].title;
     songArtist = document.querySelector('#song-artist');
-    songArtist.textContent = allTracks[lofiIndex].artist;
+    songArtist.textContent = playlist[lofiIndex].artist;
     gainNode = audioContext.createGain();
-    const track = audioContext.createMediaElementSource(lofiPlayer);
     track.connect(gainNode).connect(audioContext.destination);
     gainNode.gain.value = 0.25;
-    console.log("clicked");
 };
 
-lofiPlayer.addEventListener("ended", function () {
-    lofiIndex = GetRandomLofiIndex(lofiIndex);
-    lofiPlayer.src = lofi[lofiIndex].file;
-    lofiPlayer.play();
-    songTitle.textContent = lofi[lofiIndex].title;
-    songArtist.textContent = lofi[lofiIndex].artist;
+
+function SetPlaylist(choice) {
+    if (choice === "all") { return [...lofi, ...hymns]; }
+    else if (choice === "chill") { return lofi; }
+    else { return hymns };
+}
+
+lofiPlayer.addEventListener("ended", async function () {
+    lofiIndex = await GetRandomLofiIndex(lofiIndex);
+    if (playlist && playlist[lofiIndex] && playlist[lofiIndex].file) {
+        lofiPlayer.src = playlist[lofiIndex].file;
+        lofiPlayer.play();
+        songTitle.textContent = playlist[lofiIndex].title;
+        songArtist.textContent = playlist[lofiIndex].artist;
+    } else {
+        songTitle.textContent = "";
+        songArtist.textContent = "An error occurred.";
+    }
+});
+
+const playlistSelector = document.querySelector('.playlist-selector');
+const hymnsPlaylistSelector = document.getElementById('hymns-playlist');
+hymnsPlaylistSelector.classList.toggle('selected');
+const allTracksPlaylistSelector = document.getElementById('all-tracks');
+allTracksPlaylistSelector.classList.toggle('selected');
+const chillPlaylistSelector = document.getElementById('chill-playlist');
+chillPlaylistSelector.classList.toggle('selected');
+
+playlistSelector.addEventListener('click', function () {
+  if (chosenPlaylist === "all") {
+    allTracksPlaylistSelector.classList.toggle('selected');
+    chillPlaylistSelector.classList.toggle('selected');
+    chosenPlaylist = "hymns";
+  } else if (chosenPlaylist === "hymns") {
+      hymnsPlaylistSelector.classList.toggle('selected');
+      chillPlaylistSelector.classList.toggle('selected');
+      chosenPlaylist = "chill";
+  } else {
+      allTracksPlaylistSelector.classList.toggle('selected');
+      hymnsPlaylistSelector.classList.toggle('selected');
+      chosenPlaylist = "all";
+  }
+  
+  playlist = SetPlaylist(chosenPlaylist);
 });
 
 //#endregion lofiPlayer
@@ -71,7 +99,7 @@ bookSelector.addEventListener("change", function () {
     let placeholderOption = document.createElement("option");
         placeholderOption.disabled = true;
         placeholderOption.selected = true;
-        placeholderOption.text = "--select a chapter--";
+        placeholderOption.text = "- select chapter -";
         chapterSelector.add(placeholderOption);
     for (let i = 1; i <= chaptersList[bookSelector.value]; i++) {
         chapterSelector.options[chapterSelector.options.length] = new Option(i, i);
@@ -84,7 +112,7 @@ const chapterSelector = document.getElementById('chapter-selector');
 (function InitializeChapterSelectorForJohn1() {
     let placeholderOption = document.createElement("option");
     placeholderOption.disabled = true;
-    placeholderOption.text = "--select a chapter--";
+    placeholderOption.text = "- select chapter -";
     chapterSelector.add(placeholderOption);
     
     for (let i = 1; i <= chaptersList[42]; i++) {
@@ -109,28 +137,12 @@ playbackRateSelector.addEventListener("click", function () {
     selectedRate = selectedRate == 6 ? selectedRate = 0 : ++selectedRate;
     setPlaybackRate();
 });
+
 function setPlaybackRate() {
     playbackRateSelector.textContent = "";
-    playbackRateSelector.textContent = Object.keys(rate[selectedRate]);
-    biblePlayer.playbackRate = Object.values(rate[selectedRate]);
-}
-
-let theme = "dark";
-const switcher = document.querySelector('.switcher');
-switcher.classList.add("theme-switcher");
-switcher.src = theme == 'dark' ? "assets/icons/sun.webp" : "assets/icons/moon.webp";
-switcher.addEventListener('click', function () {
-    if (theme == "dark") {
-        switcher.src = "assets/icons/moon.webp";
-        theme = "light";
-    }
-    else {
-        switcher.src = "assets/icons/sun.webp";
-        theme = "dark";
-    }
-    chapterContainer.classList.toggle("light");
-});
-
+    playbackRateSelector.textContent = Object.keys(rates[selectedRate]);
+    biblePlayer.playbackRate = Object.values(rates[selectedRate]);
+};
 //#endregion interactive controls
 
 //#region lofiVolumeIcon
@@ -220,6 +232,30 @@ previousButton.forEach(btn => {
     })    
 });
 
+const timer = document.querySelector('#timer');
+function formatTime(seconds) {
+    const minutes = Math.floor(seconds / 60);
+    const secondsLeft = Math.floor(seconds % 60);
+    return `${String(minutes).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
+}
+
+function updateTimer() {
+    const elapsedTime = formatTime(biblePlayer.currentTime * biblePlayer.playbackRate);
+    const totalTime = formatTime(biblePlayer.duration);
+    timer.textContent = `${elapsedTime} / ${totalTime}`;
+}
+
+const interval = setInterval(() => {
+    // Ensure the audio metadata has been loaded before updating the timer
+    if (!isNaN(biblePlayer.duration)) {
+        updateTimer();
+    }
+}, 250);
+
+biblePlayer.addEventListener('loadedmetadata', updateTimer);
+
+// biblePlayer.addEventListener('timeupdate', updateTimer);
+
 //#endregion biblePlayer
 
 //#region Play/Pause Logic
@@ -246,6 +282,7 @@ async function playPauseLogic() {
 };
 
 async function playChapter() {
+    if (lofiIndex == null) { await initializeLofiResources(); }
     await displayChapterText();
     isPlaying = false;
     biblePlayer.pause();
@@ -311,4 +348,5 @@ displayChapterText();
 
 //#endregion Get Chapter Text
 
+Theme(chapterContainer);
 Footer();

@@ -1467,7 +1467,7 @@ const audio = {
       source: "https://pixabay.com/music/beats-lost-ambient-lofi-60s-10821/"
     },
     {
-      file: `${chillPath}/lost-ambient-lofi-60s-10821.mp3`,
+      file: `${chillPath}/no-more-stars-207237.mp3`,
       artist: "CalvinClavier",
       title: "no more stars",
       source: "https://pixabay.com/music/beats-no-more-stars-207237/"
@@ -1506,7 +1506,13 @@ const hymns = [
     file: `${hymnsPath}/come_thou_fount.mp3`,
     artist: "Lofi Hymns",
     title: "Come Thou Fount of Every Blessing",
-    source: "https://ryancornett.com/"
+    source: "https://lofihymns.com/"
+  },
+  {
+    file: `${hymnsPath}/when-i-survey-the-wondrous-cross.mp3`,
+    artist: "Lofi Hymns",
+    title: "When I Survey the Wondrous Cross",
+    source: "https://lofihymns.com/"
   }
 
 ];
@@ -1517,7 +1523,7 @@ const apiRef = [
     "JHN", "ACT", "ROM", "1CO", "2CO", "GAL", "EPH", "PHP", "COL", "1TH", "2TH", "1TI", "2TI", "TIT", "PHM", "HEB", "JAS", "1PE", "2PE", "1JN", "2JN",
     "3JN", "JUD", "REV"];
 
-const rate = [
+const rates = [
     {"1.00x": 1},
     {"1.25x": 1.25},
     {"1.50x": 1.5},
@@ -2311,5 +2317,5 @@ function UpdateCache(chapter) {
   }
 };
   
-export { audio, booksList, chaptersList, lofi, hymns, apiRef, rate, cache, UpdateCache };
+export { audio, booksList, chaptersList, lofi, hymns, apiRef, rates, cache, UpdateCache };
   

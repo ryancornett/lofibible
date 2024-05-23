@@ -76,28 +76,26 @@ h1 {
 }
 
 .translation-picker {
-    font-size: 0.75rem;
     margin-bottom: 0.35rem;
 }
 
 .translation-picker {
-    color: #766d47;
+    color: #9c9470;
     user-select: none;
 }
   
 .translation-picker > span {
 -webkit-text-stroke-width: 0.25px;
 -webkit-text-stroke-color: #333;
-font-size: 0.8rem;
+font-size: 1rem;
 margin-right: 0.3rem;
 user-select: none;
 cursor: pointer;
 transition: all ease 200ms;
 }
 
-.translation-picker-selector:hover {
-color: #696964;
-text-shadow: 0 0 10px #ccc;
+.translation-picker:hover {
+color: #696564;
 transition: all ease 200ms;
 }
 
@@ -134,7 +132,7 @@ transition: all ease 200ms;
     align-items: center;
     justify-content: center;
     gap: 10svw;
-    margin: 3rem 0;
+    margin: 1.75rem 0;
 }
 
 .theme-switcher, .restart {
@@ -242,13 +240,13 @@ transition: all ease 200ms;
 }
 
 .playlist-selector {
-    color: #45403e;
+    color: #696564;
     user-select: none;
   }
   .playlist-selector > span {
     -webkit-text-stroke-width: 0.25px;
     -webkit-text-stroke-color: #333;
-    font-size: 0.8rem;
+    font-size: 0.925rem;
     margin-right: 0.3rem;
     user-select: none;
     cursor: pointer;
@@ -388,6 +386,10 @@ input[type=range]::-ms-thumb {
 .chapter-container.light {
     background-color: white;
     color: #21211e;
+}
+
+.kjv-p-top {
+    padding-top: 1.75rem;
 }
 
 .verse-heading {
@@ -575,7 +577,7 @@ footer {
 
     .interactive-controls {
         max-width: unset;
-        margin: 1rem 0;
+        margin: 1rem 0 0 0;
         gap: 40%;
     }
 

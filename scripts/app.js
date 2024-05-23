@@ -3,6 +3,8 @@ import BuildChapter from "./builder.js";
 import Footer from "./footer.js";
 import Theme from "./theme.js";
 
+//#region lofiPlayer
+
 async function GetRandomLofiIndex(current) {
     let randomIndex = Math.floor(Math.random() * playlist.length);
     if (randomIndex == current) { return await GetRandomLofiIndex(current); }
@@ -33,15 +35,12 @@ async function initializeLofiResources() {
     const track = audioContext.createMediaElementSource(lofiPlayer);
     gainNode = audioContext.createGain();
     const compressor = audioContext.createDynamicsCompressor();
-
-    // Set compressor parameters (adjust these values based on your needs)
-    compressor.threshold.setValueAtTime(-30, audioContext.currentTime); // dB
-    compressor.knee.setValueAtTime(30, audioContext.currentTime); // dB
-    compressor.ratio.setValueAtTime(3, audioContext.currentTime); // Ratio
-    compressor.attack.setValueAtTime(0.35, audioContext.currentTime); // Seconds
+    compressor.threshold.setValueAtTime(-30, audioContext.currentTime);
+    compressor.knee.setValueAtTime(30, audioContext.currentTime);
+    compressor.ratio.setValueAtTime(3, audioContext.currentTime);
+    compressor.attack.setValueAtTime(0.35, audioContext.currentTime);
     compressor.release.setValueAtTime(0.35, audioContext.currentTime);
     track.connect(gainNode).connect(compressor).connect(audioContext.destination);
-    console.log(compressor.knee.value);
     gainNode.gain.value = 0.25;
 };
 
@@ -94,6 +93,7 @@ playlistSelector.addEventListener('click', function () {
 //#endregion lofiPlayer
 
 //#region bookSelector
+
 const bookSelector = document.getElementById('book-selector');
 (function InitializeBookSelectorToJohn() {
     booksList.forEach((book, index) => {
@@ -118,9 +118,11 @@ bookSelector.addEventListener("change", function () {
         chapterSelector.options[chapterSelector.options.length] = new Option(i, i);
     }
 });
+
 //#endregion bookSelector
 
 //#region chapterSelector
+
 const chapterSelector = document.getElementById('chapter-selector');
 (function InitializeChapterSelectorForJohn1() {
     let placeholderOption = document.createElement("option");
@@ -138,9 +140,11 @@ const chapterSelector = document.getElementById('chapter-selector');
 })();
 
 chapterSelector.addEventListener("change", playChapter);
+
 //#endregion chapterSelector
 
 //#region interactive controls
+
 let restartClickable = document.querySelectorAll('.restart');
 restartClickable.forEach(btn => { btn.addEventListener('click', playChapter); })
 
@@ -189,6 +193,8 @@ lofiVolumeIcon.onclick = function handleQuickMute() {
 }
 //#endregion lofiVolumeIcon
 
+//#region Translation picker
+
 const kjv = 'eng-kjv2006';
 const bsb = 'BSB';
 let translation = bsb;
@@ -201,6 +207,8 @@ translationPicker.addEventListener('click', function () {
     bsbPicker.classList.toggle('selected');
     translation = translation == kjv ? bsb : kjv;
 })
+
+//#endregion Translation picker
 
 //#region biblePlayer
 
@@ -238,6 +246,10 @@ function handleEndOfAllChaptersExceptLastChapter(selectedTranslation) {
     chapterSelector.selectedIndex = parseInt(chapterSelector.value) + 1;
 }
 
+//#endregion biblePlayer
+
+//#region Bible controls
+
 const nextButton = document.querySelector('.next');
 nextButton.addEventListener('click', () => {
     if (chapterSelector.value != SELECT_CHAPTER_OPTION) { biblePlayer.dispatchEvent(new Event('ended')); }
@@ -263,6 +275,10 @@ previousButton.addEventListener('click', () => {
     }    
 });
 
+//#endregion Bible controls
+
+//#region Chapter audio timer
+
 const timer = document.querySelector('#timer');
 function formatTime(seconds) {
     const minutes = Math.floor(seconds / 60);
@@ -285,9 +301,7 @@ const interval = setInterval(() => {
 
 biblePlayer.addEventListener('loadedmetadata', updateTimer);
 
-// biblePlayer.addEventListener('timeupdate', updateTimer);
-
-//#endregion biblePlayer
+//#endregion Chapter audio timer
 
 //#region Play/Pause Logic
 
@@ -377,6 +391,7 @@ async function displayChapterText() {
         }
     }
 
+    if (translation == kjv) { chapterContainer.appendChild(Object.assign(document.createElement('p'),{classList:"kjv-p-top"})); }
     chapterComponents.forEach(item => {
         chapterContainer.append(item);
     })

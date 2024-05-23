@@ -871,11 +871,11 @@ const audio = {
     ],
   
     "Lamentations": [
-      {"BSB": `${bsbPath}25_Lamentations/BSB_25_001.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations001.mp3`},
-      {"BSB": `${bsbPath}25_Lamentations/BSB_25_002.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations002.mp3`},
-      {"BSB": `${bsbPath}25_Lamentations/BSB_25_003.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations003.mp3`},
-      {"BSB": `${bsbPath}25_Lamentations/BSB_25_004.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations004.mp3`},
-      {"BSB": `${bsbPath}25_Lamentations/BSB_25_005.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations005.mp3`}
+      {"BSB": `${bsbPath}25_Lamentations/BSB_25_Lam_001.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations001.mp3`},
+      {"BSB": `${bsbPath}25_Lamentations/BSB_25_Lam_002.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations002.mp3`},
+      {"BSB": `${bsbPath}25_Lamentations/BSB_25_Lam_003.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations003.mp3`},
+      {"BSB": `${bsbPath}25_Lamentations/BSB_25_Lam_004.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations004.mp3`},
+      {"BSB": `${bsbPath}25_Lamentations/BSB_25_Lam_005.mp3`, "eng-kjv2006": `${kjvPath}25_Lamentations/KJV_Bible-Lamentations005.mp3`}
     ],
   
     "Ezekiel": [
@@ -1496,6 +1496,18 @@ const lofi = [
     artist: "Pixabay",
     title: "Sunset Vibes",
     source: "https://pixabay.com/music/beats-sunset-vibes-lo-fichillhop-9503/"
+  },
+  {
+    file: `${chillPath}/lofi-orchestra-162306.mp3`,
+    artist: "xethrocc",
+    title: "LoFi Orchestra",
+    source: "https://pixabay.com/music/beats-lofi-orchestra-162306/"
+  },
+  {
+    file: `${chillPath}/spirit-blossom-15285.mp3`,
+    artist: "RomanBelov",
+    title: "Spirit Blossom",
+    source: "https://pixabay.com/music/beats-spirit-blossom-15285/"
   },
 
 ];

@@ -14,8 +14,7 @@ let lofiIndex;
 let artistLink;
 let songTitle;
 let songArtist;
-const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-const track = audioContext.createMediaElementSource(lofiPlayer);
+
 let gainNode;
 let chosenPlaylist = "all";
 let playlist = SetPlaylist(chosenPlaylist);
@@ -29,8 +28,20 @@ async function initializeLofiResources() {
     songTitle.textContent = playlist[lofiIndex].title;
     songArtist = document.querySelector('#song-artist');
     songArtist.textContent = playlist[lofiIndex].artist;
+
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)();
+    const track = audioContext.createMediaElementSource(lofiPlayer);
     gainNode = audioContext.createGain();
-    track.connect(gainNode).connect(audioContext.destination);
+    const compressor = audioContext.createDynamicsCompressor();
+
+    // Set compressor parameters (adjust these values based on your needs)
+    compressor.threshold.setValueAtTime(-30, audioContext.currentTime); // dB
+    compressor.knee.setValueAtTime(30, audioContext.currentTime); // dB
+    compressor.ratio.setValueAtTime(3, audioContext.currentTime); // Ratio
+    compressor.attack.setValueAtTime(0.35, audioContext.currentTime); // Seconds
+    compressor.release.setValueAtTime(0.35, audioContext.currentTime);
+    track.connect(gainNode).connect(compressor).connect(audioContext.destination);
+    console.log(compressor.knee.value);
     gainNode.gain.value = 0.25;
 };
 
@@ -94,12 +105,14 @@ const bookSelector = document.getElementById('book-selector');
     });
 })();
 
+const SELECT_CHAPTER_OPTION = "- select chapter -";
+
 bookSelector.addEventListener("change", function () {
     chapterSelector.innerHTML = '';
     let placeholderOption = document.createElement("option");
         placeholderOption.disabled = true;
         placeholderOption.selected = true;
-        placeholderOption.text = "- select chapter -";
+        placeholderOption.text = SELECT_CHAPTER_OPTION;
         chapterSelector.add(placeholderOption);
     for (let i = 1; i <= chaptersList[bookSelector.value]; i++) {
         chapterSelector.options[chapterSelector.options.length] = new Option(i, i);
@@ -112,7 +125,7 @@ const chapterSelector = document.getElementById('chapter-selector');
 (function InitializeChapterSelectorForJohn1() {
     let placeholderOption = document.createElement("option");
     placeholderOption.disabled = true;
-    placeholderOption.text = "- select chapter -";
+    placeholderOption.text = SELECT_CHAPTER_OPTION;
     chapterSelector.add(placeholderOption);
     
     for (let i = 1; i <= chaptersList[42]; i++) {
@@ -128,8 +141,8 @@ chapterSelector.addEventListener("change", playChapter);
 //#endregion chapterSelector
 
 //#region interactive controls
-let restartClickable = document.querySelector('.restart');
-restartClickable.addEventListener('click', playChapter);
+let restartClickable = document.querySelectorAll('.restart');
+restartClickable.forEach(btn => { btn.addEventListener('click', playChapter); })
 
 let selectedRate = 0;
 const playbackRateSelector = document.getElementById('playback-rate-selector');
@@ -176,16 +189,36 @@ lofiVolumeIcon.onclick = function handleQuickMute() {
 }
 //#endregion lofiVolumeIcon
 
+const kjv = 'eng-kjv2006';
+const bsb = 'BSB';
+let translation = bsb;
+
+const translationPicker = document.querySelector('.translation-picker');
+const kjvPicker = document.getElementById('kjv');
+const bsbPicker = document.getElementById('bsb');
+translationPicker.addEventListener('click', function () {
+    kjvPicker.classList.toggle('selected');
+    bsbPicker.classList.toggle('selected');
+    translation = translation == kjv ? bsb : kjv;
+})
+
 //#region biblePlayer
+
 const biblePlayer = document.getElementById('bible-player');
 biblePlayer.volume = 1;
-biblePlayer.src = audio["John"][0];
+biblePlayer.src = audio["John"][0][translation];
 
 biblePlayer.addEventListener("ended", function () {
-    if (biblePlayer.src == audio["Revelation"][21]) { handleEndOfRevelation(); }
-    else if (chapterSelector.value == chaptersList[bookSelector.value]) { handleEndOfAllBooksExceptRevelation(); }
-    else { handleEndOfAllChaptersExceptLastChapter(); }
-    chapterSelector.dispatchEvent(new Event('change'));
+    try {
+        if (biblePlayer.src == audio["Revelation"][21][translation]) { handleEndOfRevelation(); }
+        else if (chapterSelector.value == chaptersList[bookSelector.value]) {handleEndOfAllBooksExceptRevelation(); }
+        else {
+            handleEndOfAllChaptersExceptLastChapter(translation);
+        }
+        chapterSelector.dispatchEvent(new Event('change'));
+    } catch(error) {
+        console.log(error);
+    }
 })
 
 function handleEndOfRevelation() {
@@ -200,23 +233,21 @@ function handleEndOfAllBooksExceptRevelation() {
     chapterSelector.selectedIndex = 1;
 }
 
-function handleEndOfAllChaptersExceptLastChapter() {
+function handleEndOfAllChaptersExceptLastChapter(selectedTranslation) {
+    biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value][selectedTranslation];
     chapterSelector.selectedIndex = parseInt(chapterSelector.value) + 1;
-    biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value];
 }
 
-const nextButton = document.querySelectorAll('.next');
-nextButton.forEach(btn => {
-    btn.addEventListener('click', () => {
-        biblePlayer.dispatchEvent(new Event('ended'));
-    })
-});
+const nextButton = document.querySelector('.next');
+nextButton.addEventListener('click', () => {
+    if (chapterSelector.value != SELECT_CHAPTER_OPTION) { biblePlayer.dispatchEvent(new Event('ended')); }
+})
 
-const previousButton = document.querySelectorAll('.previous');
-previousButton.forEach(btn => {
-    btn.addEventListener('click', () => {
-        if (biblePlayer.src == audio["Genesis"][0]) { 
-            biblePlayer.src = audio["Revelation"][21];
+const previousButton = document.querySelector('.previous');
+previousButton.addEventListener('click', () => {
+    if (chapterSelector.value != SELECT_CHAPTER_OPTION) {
+        if (biblePlayer.src == audio["Genesis"][0][translation]) { 
+            biblePlayer.src = audio["Revelation"][21][translation];
             bookSelector.selectedIndex = 65;
             chapterSelector.selectedIndex = chaptersList[bookSelector.value];
         }
@@ -229,7 +260,7 @@ previousButton.forEach(btn => {
             chapterSelector.selectedIndex = chapterSelector.selectedIndex - 1;
         }
         chapterSelector.dispatchEvent(new Event('change'));
-    })    
+    }    
 });
 
 const timer = document.querySelector('#timer');
@@ -286,7 +317,7 @@ async function playChapter() {
     await displayChapterText();
     isPlaying = false;
     biblePlayer.pause();
-    biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1];
+    biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1][translation];
     playPauseLogic();
     setPlaybackRate();
 };
@@ -299,7 +330,7 @@ playPauseButton.forEach(btn => {
 //#endregion Play/Pause Logic
 
 //#region Get Chapter Text
-const translation = 'BSB';
+
 const chapterContainer = document.querySelector('.chapter-container');
 
 async function GetChapterData() {
@@ -310,7 +341,8 @@ async function GetChapterData() {
             throw new Error('Failed to fetch data');
         }
         const chapter = await response.json();
-        UpdateCache(chapter);
+        UpdateCache(translation, chapter);
+
         return chapter;
     } catch (error) {
         console.log(error);
@@ -319,15 +351,22 @@ async function GetChapterData() {
     }
 };
 
-const attributionNotice = document.createElement('p');
+const bsbAttribution = "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.";
+const kjvAttribution = "King James Bible.";
+const attributionNotice = document.createElement('div');
 attributionNotice.classList.add('attribution');
-attributionNotice.textContent = "The Holy Bible, Berean Standard Bible, BSB is produced in cooperation with Bible Hub, Discovery Bible, OpenBible.com, and the Berean Bible Translation Committee. This text of God's Word has been dedicated to the public domain.";
+const translationCredit = document.createElement('p');
+translationCredit.textContent = translation == bsb ? bsbAttribution : kjvAttribution;
+const apiCredit = document.createElement('p');
+apiCredit.textContent = "Courtesy of bible.helloao.org.";
+attributionNotice.appendChild(translationCredit);
+attributionNotice.appendChild(apiCredit);
 
 async function displayChapterText() {
     chapterContainer.innerHTML = "";
     let chapterComponents;
-    if (cache[`${apiRef[bookSelector.value]}${chapterSelector.value}`]) {
-        chapterComponents = await BuildChapter(cache[`${apiRef[bookSelector.value]}${chapterSelector.value}`]);
+    if (cache[`${apiRef[bookSelector.value]}${chapterSelector.value}${translation}`]) {
+        chapterComponents = await BuildChapter(cache[`${apiRef[bookSelector.value]}${chapterSelector.value}${translation}`]);
     }
     else {
         try {
@@ -341,6 +380,7 @@ async function displayChapterText() {
     chapterComponents.forEach(item => {
         chapterContainer.append(item);
     })
+    translationCredit.textContent = translation == bsb ? bsbAttribution : kjvAttribution;
     chapterContainer.appendChild(attributionNotice);
 };
 

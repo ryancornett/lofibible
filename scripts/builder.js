@@ -1,6 +1,10 @@
 let verses = [];
 
 export default async function BuildChapter(data) {
+    return HandleBSB(data);
+}
+
+async function HandleBSB(data) {
     verses = [];
     let arr = await data.chapter.content;
     arr.forEach(item => {
@@ -18,6 +22,10 @@ export default async function BuildChapter(data) {
         }
     });
     return verses;
+}
+
+async function HandleKJV(data) {
+    console.log("Not implemented.");
 }
 
 function HandleHeading(item) {
@@ -79,8 +87,14 @@ function HandleVerse(item) {
                 poemLine.classList.remove(`indent-${indent}`);
                 poemLine.textContent = "\u00A0" + poemLine.textContent;
             }
+        } else if (item.content[i] && 'text' in item.content[i]) {
+            versePart.textContent += item.content[i].text;
         }
     }
+    let placeholder = versePart.textContent;
+    let takeOutParagraphSymbols = placeholder.replace("¶ ", "");
+    let takeOutNewLineCharacters = takeOutParagraphSymbols.replace(`\\n`, "\u00A0 ");
+    versePart.textContent = takeOutParagraphSymbols;
     verse.appendChild(versePart);
     verses.push(verse);
 };

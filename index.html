@@ -15,20 +15,26 @@
 
         <div class="app">
             
-            <div class="left">
+            <div class="left" id="top">
                 <audio id="bible-player"></audio>
-
-                <div id="timer">00:00 / 00:00</div>
+                
+                <div class="translation-picker" title="Toggle translation">
+                    <span id="kjv">KJV</span>
+                    <span> / </span>
+                    <span id="bsb" class="selected">BSB</span>
+                </div>
 
                 <div class="selector">
                     <select id="book-selector"></select>
                     <select id="chapter-selector"></select>
                 </div>
 
+                <div id="timer">00:00 / 00:00</div>
+
                 <div class="interactive-controls">
-                    <img src="assets/icons/restart.webp" class="restart" alt="Restart" />
-                    <span id="playback-rate-selector">1.00x</span>
-                    <img src="assets/icons/sun.webp" class="switcher" alt="Change text theme" />
+                    <img src="assets/icons/restart.webp" title="Restart chapter" class="restart" alt="Restart" />
+                    <span id="playback-rate-selector" title="Change speed">1.00x</span>
+                    <img src="assets/icons/sun.webp" title="Toggle light/dark Bible text" class="switcher" alt="Change text theme" />
                 </div>
 
                 <div class="play-controls">
@@ -47,9 +53,9 @@
                     </div>
                     <div class="lofi-volume-wrapper">
                         <label for="lofi-volume"><img onclick="handleQuickMute" id="lofi-volume-icon" src="assets/icons/medium.webp" alt="Volume icon" /></label>
-                        <input type="range" id="lofi-volume" min="0" max="0.6" step="0.01" value="0.25" />
+                        <input type="range" id="lofi-volume" min="0" max="0.8" step="0.02" value="0.26" />
                     </div>
-                    <div class="playlist-selector">
+                    <div class="playlist-selector" title="Choose playlist">
                         <span id="hymns-playlist">hymns</span>
                         <span id="all-tracks"> + </span>
                         <span id="chill-playlist">chill</span>
@@ -64,12 +70,13 @@
         <footer>
             <div class="adaptive-play-menu">
                 <div class="adaptive-play-controls">
-                    <img src="assets/icons/previous.webp" class="previous-next previous" alt="Previous" />
+                    <img src="assets/icons/restart.webp" class="restart" alt="Restart" />
                     <img src="assets/icons/play.webp" class="play-pause" alt="Play or pause" />
-                    <img src="assets/icons/next.webp" class="previous-next next" alt="Next" />
+                    <a href="#top"><img src="assets/icons/to-top.webp" class="previous-next next" alt="Back to top" /></a>
                 </div>
-                <h1>Lofi Audio Bible</h1>
             </div>
+            <h1>Lofi.Bible</h1>
+            
             <div class="info-icon-wrapper">
                 <img src="assets/icons/info.webp" id="info-clickable" class="footer-icon" alt="About the site" title="About the site" />
             </div>
@@ -80,26 +87,46 @@
                 <img src="assets/icons/contact.webp" class="footer-icon" alt="Leave feedback" title="Leave feedback" />
             </a>
             <a href="https://linktr.ee/ryancornett" target="_blank">
-                <img src="assets/icons/link.webp" class="footer-icon" alt="About the site creator" title="Ryan's links" />
+                <img src="assets/icons/link.webp" class="footer-icon" alt="About the site creator" title="More links" />
             </a>
         </footer>
 
         <dialog id="info-modal">
-            <div id="close-info">
-                <img src="assets/icons/close.webp" alt="Close"/>
-            </div>
-            <div class="why-bsb">
-                <h4>Why the Berean Standard Bible translation?</h4>
-                <p>The Berean Standard Bible (BSB) is in the public domain and licensing is not required. The BSB is free to share--there is no limit to how many verses/chapters may be distributed or what percentage of a work the words of the BSB may make up.</p>
-                <p>Since 60% of the world's languages do not have a translation that may be freely shared, such openness with God's Word should be appreciated and encouraged.</p>
-                <p>Even the Bible audio (used here) is made available freely to whomever wants it!</p>
+            <div class="modal-wrapper">
+                <div id="close-info">
+                    <img src="assets/icons/close.webp" alt="Close"/>
+                </div>
+                
+                <p class="italicize fs-0-75">We are aware of errors in how Bible text is sometimes displayed and are corresponding with the API developers for fixes. We apologize for the inconvenience.</p>
 
-                <h4>Why Lofi/Chill Beats?</h4>
-                <p>This relaxing genre is a favorite background sound for many as they go about their work or relax around the house. Now you can have that and the Bible too!</p>
+                <h4 class="mb-lowered">Offering the King James makes sense...</h4>
+                <h4 class="attention">But why the Berean Standard Bible?</h4>
+                <p class="fs-0-9">The Berean Standard Bible (BSB) is in the public domain and licensing is not required. The BSB is free to share--there is no limit to how many verses/chapters may be distributed or what percentage of a work the words of the BSB may make up.</p>
+                <p class="fs-0-9">Since 60% of the world's languages do not have a translation that may be freely shared, such openness with God's Word should be appreciated and encouraged.</p>
+                <h4 class="mb-lowered attention">Why Lofi Music?</h4>
+                <p class="fs-0-9">Lofi music is a popular choice for background ambiance while reading or listening. It is by definition soothing, simple, and unobtrusive. Lofi typically features mellow beats and gentle rhythms, creating a calming environment that helps listeners concentrate without distraction. The minimalistic and easygoing nature of lofi can enhance focus and promote thoughfulness, which is particularly beneficial when engaging with the Bible which often requires reflection and contemplation.</p>
+                <p class="fs-0-9">Lofi can also mask ambient noise and create a more serene and private reading or listening experience. This can be especially valuable in today's often noisy and hectic environments, where finding a quiet space can be challenging. The gentle, instrumental sounds help to block out distractions, allowing for a deeper immersion into the richness of the Scriptures.</p>
+                <h5 class="mb-lowered">Chill Beats</h5>
+                <p class="fs-0-9">Courtesy of <a href="https://pixabay.com/service/license-summary/" target="_blank" class="footer-link">Pixabay</a></p>
+                
+                <h5 class="mb-lowered">Lofi Hymns</h5>
+                <p class="fs-0-9">In cooperation with <a href="https://lofihymns.com" target="_blank" class="footer-link">Lofi Hymns</a>. Hymns to be released monthly beginning June, 2024.</p>
+                
+                <h4 class="mb-lowered attention">Bible Audio</h4>
+                <h5 class="mb-lowered">BSB</h5>
+                <p class="fs-0-9">Read by Bob Souer. Source: https://biblehub.com/audio/downloads.htm</p>
+                <h5 class="mb-lowered">KJV</h5>
+                <p class="fs-0-9">Read by Dan Wagner. Source: https://www.mp3bible.ca/</p>
+                <p class="fs-0-9">Audio Scriptures International <a href="https://github.com/ryancornett/Bible_Audio/raw/main/Audio_Scriptures_International_Copyright_Info.mp3" alt="Download audio tag" class="footer-link">copyright audio tag</a> (transcript below)</p>
+                <p class="italicize fs-0-9">"Thank you for listening to this recording of the King James Bible produced by Audio Scriptures International. Audio Scriptures International believes it is more important to spread the Word of God than to make a large profit. Please feel free to make copies of these recordings and distribute them freely so long as you adhere to the following guidelines:</p>
+                <ol>
+                    <li class="italicize fs-0-9">You may not charge any more than the cost to duplicate and send them.</li>
+                    <li class="italicize fs-0-9">You must make a complete copy of the recording, including this message.</li>
+                </ol>
+                <p class="fs-0-9">For commercial and fund raising distribution, please contact Audio Scriptures International for additional information."</p>
             </div>
 
-            <p><a href="https://pixabay.com/service/license-summary/" id="pixabay-license">Pixabay Content License Summary</a></p>
-            <p>God bless and enjoy the site! - Ryan</p>
+            
         </dialog>
 
         <script src="scripts/app.js" type="module" async defer></script>

@@ -477,6 +477,10 @@ dialog {
     margin-bottom: -0.75rem;
 }
 
+.mb-minus-0-25 {
+    margin-bottom: -0.25rem;
+}
+
 .fs-0-9 {
     font-size: 0.9rem;
 }
@@ -501,7 +505,7 @@ footer {
     box-shadow: #b9970d 0 -1px 50px;
 }
 
-.footer-icon {
+.footer-icon, .small {
     cursor: pointer;
     filter: invert(1);
     height: clamp(1.5rem, 1.75rem, 1.5vw);
@@ -509,9 +513,14 @@ footer {
     transition: all ease-in-out 400ms;
 }
 
-.footer-icon:hover {
+.footer-icon:hover, .small:hover {
     filter: invert(1) drop-shadow(0 0 15px #f8ca11);
     transition: all ease-in-out 400ms;
+}
+
+.small {
+    width: clamp(1rem, 1.15rem, 1.5vw);
+    height: clamp(1rem, 1.15rem, 1.5vw);
 }
 
 .adaptive-play-menu {

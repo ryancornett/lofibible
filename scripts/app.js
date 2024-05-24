@@ -204,6 +204,7 @@ const kjvPicker = document.getElementById('kjv');
 const bsbPicker = document.getElementById('bsb');
 let translationFlag = false;
 translationPicker.addEventListener('click', async function () {
+    if (lofiIndex == null) { initializeLofiResources(); }
     kjvPicker.classList.toggle('selected');
     bsbPicker.classList.toggle('selected');
     translation = translation == kjv ? bsb : kjv;
@@ -342,13 +343,18 @@ async function playChapter() {
     isPlaying = false;
     biblePlayer.pause();
     biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1][translation];
-    playPauseLogic();
+    if (playedInitially > 0) { playPauseLogic(); }
     setPlaybackRate();
 };
 
+let playedInitially = 0;
 const playPauseButton = document.querySelectorAll('.play-pause');
 playPauseButton.forEach(btn => {
-    btn.addEventListener('click', playPauseLogic);
+    btn.addEventListener('click', function () {
+        if (lofiIndex == null) { initializeLofiResources(); }
+        playedInitially++;
+        playPauseLogic();
+    });
 });
 
 //#endregion Play/Pause Logic

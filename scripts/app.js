@@ -204,15 +204,13 @@ const kjvPicker = document.getElementById('kjv');
 const bsbPicker = document.getElementById('bsb');
 let translationFlag = false;
 translationPicker.addEventListener('click', async function () {
-    if (lofiIndex == null) { initializeLofiResources(); }
     kjvPicker.classList.toggle('selected');
     bsbPicker.classList.toggle('selected');
     translation = translation == kjv ? bsb : kjv;
     translationFlag = true;
     // First call of playPauseLogic stops the player if playing, changes the translation, & changes the flag to false; the second restarts it if necessary
-    await playPauseLogic();
-    if (!isPlaying) { await playPauseLogic(); }
-    await displayChapterText();
+    await playChapter();
+    if (!isPlaying) { await playChapter(); }
 })
 
 //#endregion Translation picker
@@ -343,16 +341,13 @@ async function playChapter() {
     isPlaying = false;
     biblePlayer.pause();
     biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1][translation];
-    if (playedInitially > 0) { playPauseLogic(); }
+    playPauseLogic();
     setPlaybackRate();
 };
 
-let playedInitially = 0;
 const playPauseButton = document.querySelectorAll('.play-pause');
 playPauseButton.forEach(btn => {
     btn.addEventListener('click', function () {
-        if (lofiIndex == null) { initializeLofiResources(); }
-        playedInitially++;
         playPauseLogic();
     });
 });

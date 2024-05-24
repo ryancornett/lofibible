@@ -287,13 +287,13 @@ previousButton.addEventListener('click', () => {
 
 const timer = document.querySelector('#timer');
 function formatTime(seconds) {
-    const minutes = Math.floor(seconds / 60);
-    const secondsLeft = Math.floor(seconds % 60);
+    const minutes = Math.floor((seconds / biblePlayer.playbackRate) / 60);
+    const secondsLeft = Math.floor((seconds / biblePlayer.playbackRate) % 60);
     return `${String(minutes).padStart(2, '0')}:${String(secondsLeft).padStart(2, '0')}`;
 }
 
 function updateTimer() {
-    const elapsedTime = formatTime(biblePlayer.currentTime * biblePlayer.playbackRate);
+    const elapsedTime = formatTime(biblePlayer.currentTime);
     const totalTime = formatTime(biblePlayer.duration);
     timer.textContent = `${elapsedTime} / ${totalTime}`;
 }
@@ -303,7 +303,7 @@ const interval = setInterval(() => {
     if (!isNaN(biblePlayer.duration)) {
         updateTimer();
     }
-}, 250);
+}, 500);
 
 biblePlayer.addEventListener('loadedmetadata', updateTimer);
 

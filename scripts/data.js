@@ -1515,19 +1515,24 @@ const lofi = [
 const hymnsPath = "./assets/audio/hymns";
 
 const hymns = [
-{
-  file: `${hymnsPath}/come_thou_fount.mp3`,
-  artist: "Lofi Hymns",
-  title: "Come Thou Fount of Every Blessing",
-  source: "https://lofihymns.com/"
-},
-{
-  file: `${hymnsPath}/when-i-survey-the-wondrous-cross.mp3`,
-  artist: "Lofi Hymns",
-  title: "When I Survey the Wondrous Cross",
-  source: "https://lofihymns.com/"
-}
-
+  {
+    file: `${hymnsPath}/come_thou_fount.mp3`,
+    artist: "Lofi Hymns",
+    title: "Come Thou Fount of Every Blessing",
+    source: "https://lofihymns.com/"
+  },
+  {
+    file: `${hymnsPath}/when-i-survey-the-wondrous-cross.mp3`,
+    artist: "Lofi Hymns",
+    title: "When I Survey the Wondrous Cross",
+    source: "https://lofihymns.com/"
+  },
+  {
+    file: `${hymnsPath}/nothing-but-the-blood.mp3`,
+    artist: "Lofi Hymns",
+    title: "Nothing but the Blood",
+    source: "https://lofihymns.com/"
+  }
 ];
 
 const apiRef = [

@@ -139,7 +139,7 @@ const chapterSelector = document.getElementById('chapter-selector');
     }
 })();
 
-chapterSelector.addEventListener("change", playChapter);
+chapterSelector.addEventListener("input", playChapter);
 
 //#endregion chapterSelector
 
@@ -338,16 +338,20 @@ async function playPauseLogic() {
 async function playChapter() {
     if (lofiIndex == null) { await initializeLofiResources(); }
     await displayChapterText();
-    isPlaying = false;
-    biblePlayer.pause();
-    biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1][translation];
-    playPauseLogic();
-    setPlaybackRate();
+    if (playedInitially) {
+        isPlaying = false;
+        biblePlayer.pause();
+        biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1][translation];
+        playPauseLogic();
+        setPlaybackRate();
+    }
 };
 
+let playedInitially = false;
 const playPauseButton = document.querySelectorAll('.play-pause');
 playPauseButton.forEach(btn => {
     btn.addEventListener('click', function () {
+        playedInitially = true;
         playPauseLogic();
     });
 });

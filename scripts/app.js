@@ -338,10 +338,10 @@ async function playPauseLogic() {
 async function playChapter() {
     if (lofiIndex == null) { await initializeLofiResources(); }
     await displayChapterText();
+    biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1][translation];
     if (playedInitially) {
         isPlaying = false;
         biblePlayer.pause();
-        biblePlayer.src = audio[booksList[bookSelector.value]][chapterSelector.value-1][translation];
         playPauseLogic();
         setPlaybackRate();
     }

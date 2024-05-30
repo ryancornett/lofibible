@@ -228,7 +228,8 @@ biblePlayer.addEventListener("ended", function () {
         else {
             handleEndOfAllChaptersExceptLastChapter(translation);
         }
-        chapterSelector.dispatchEvent(new Event('change'));
+        chapterSelector.dispatchEvent(new Event('input'));
+        // playChapter();
     } catch(error) {
         console.log(error);
     }
@@ -276,7 +277,7 @@ previousButton.addEventListener('click', () => {
         else {
             chapterSelector.selectedIndex = chapterSelector.selectedIndex - 1;
         }
-        chapterSelector.dispatchEvent(new Event('change'));
+        chapterSelector.dispatchEvent(new Event('input'));
     }    
 });
 

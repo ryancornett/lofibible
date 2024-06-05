@@ -1302,7 +1302,7 @@ const audio = {
     ],
   
     "Philemon": [
-      {"BSB": `${bsbPath}57_Philemon/BSB_57_Phm_001.mp3`, "eng-kjv2006": `${kjvPath}57_Philemon/KJV_Bible-Philemon001.mp3`}
+      {"BSB": `${bsbPath}57_Philemon/BSB_57_Phm_001.mp3`, "eng-kjv2006": `${kjvPath}57_Philemon/KJV_Bible-Philemon.mp3`}
     ],
   
     "Hebrews": [
@@ -1342,7 +1342,6 @@ const audio = {
       {"BSB": `${bsbPath}61_2Peter/BSB_61_2Pe_002.mp3`, "eng-kjv2006": `${kjvPath}61_2Peter/KJV_Bible-2Peter002.mp3`},
       {"BSB": `${bsbPath}61_2Peter/BSB_61_2Pe_003.mp3`, "eng-kjv2006": `${kjvPath}61_2Peter/KJV_Bible-2Peter003.mp3`}
     ],
-  
     "1 John": [
       {"BSB": `${bsbPath}62_1John/BSB_62_1Jn_001.mp3`, "eng-kjv2006": `${kjvPath}62_1John/KJV_Bible-1John001.mp3`},
       {"BSB": `${bsbPath}62_1John/BSB_62_1Jn_002.mp3`, "eng-kjv2006": `${kjvPath}62_1John/KJV_Bible-1John002.mp3`},
@@ -1350,17 +1349,16 @@ const audio = {
       {"BSB": `${bsbPath}62_1John/BSB_62_1Jn_004.mp3`, "eng-kjv2006": `${kjvPath}62_1John/KJV_Bible-1John004.mp3`},
       {"BSB": `${bsbPath}62_1John/BSB_62_1Jn_005.mp3`, "eng-kjv2006": `${kjvPath}62_1John/KJV_Bible-1John005.mp3`}
     ],
-  
     "2 John": [
-      {"BSB": `${bsbPath}63_2John/BSB_63_2Jn_001.mp3`, "eng-kjv2006": `${kjvPath}63_2John/KJV_Bible-2John001.mp3`}
+      {"BSB": `${bsbPath}63_2John/BSB_63_2Jn_001.mp3`, "eng-kjv2006": `${kjvPath}63_2John/KJV_Bible-2John.mp3`}
     ],
   
     "3 John": [
-      {"BSB": `${bsbPath}64_3John/BSB_64_3Jn_001.mp3`, "eng-kjv2006": `${kjvPath}64_3John/KJV_Bible-3John001.mp3`}
+      {"BSB": `${bsbPath}64_3John/BSB_64_3Jn_001.mp3`, "eng-kjv2006": `${kjvPath}64_3John/KJV_Bible-3John.mp3`}
     ],
   
     "Jude": [
-      {"BSB": `${bsbPath}65_Jude/BSB_65_Jud_001.mp3`, "eng-kjv2006": `${kjvPath}65_Jude/KJV_Bible-Jude001.mp3`}
+      {"BSB": `${bsbPath}65_Jude/BSB_65_Jud_001.mp3`, "eng-kjv2006": `${kjvPath}65_Jude/KJV_Bible-Jude.mp3`}
     ],
   
     "Revelation": [

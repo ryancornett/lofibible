@@ -362,21 +362,20 @@ playPauseButton.forEach(btn => {
 //#region Get Chapter Text
 
 const chapterContainer = document.querySelector('.chapter-container');
+let isBibleTextGettable = true;
 
 async function GetChapterData() {
     let bookIndex = parseInt(bookSelector.value);
     try {
         const response = await fetch(`https://bible.helloao.org/api/${translation}/${apiRef[bookIndex]}/${chapterSelector.value}.json`);
         if (!response.ok) {
-            throw new Error('Failed to fetch data');
+            isBibleTextGettable = false;
+            const chapter = await response.json();
+            UpdateCache(translation, chapter);
+            return chapter;
         }
-        const chapter = await response.json();
-        UpdateCache(translation, chapter);
-
-        return chapter;
     } catch (error) {
-        console.log(error);
-        chapterContainer.textContent = "An error occurred. Please try again.";
+        chapterContainer.textContent = "Bible text not available at this time.";
         return null;
     }
 };
@@ -400,19 +399,22 @@ async function displayChapterText() {
     }
     else {
         try {
-            chapterComponents = await BuildChapter(await GetChapterData());
+            if (isBibleTextGettable) {
+                chapterComponents = await BuildChapter(await GetChapterData());
+            }
         } catch (error) {
-            console.log(error);
-            chapterContainer.textContent = "An error occurred. Please try again.";
+            chapterContainer.textContent = "Bible text not available at this time.";
         }
     }
 
     if (translation == kjv) { chapterContainer.appendChild(Object.assign(document.createElement('p'),{classList:"kjv-p-top"})); }
-    chapterComponents.forEach(item => {
-        chapterContainer.append(item);
-    })
-    translationCredit.textContent = translation == bsb ? bsbAttribution : kjvAttribution;
-    chapterContainer.appendChild(attributionNotice);
+    if (chapterComponents != null) {
+        chapterComponents.forEach(item => {
+            chapterContainer.append(item);
+            translationCredit.textContent = translation == bsb ? bsbAttribution : kjvAttribution;
+            chapterContainer.appendChild(attributionNotice);
+        })
+    }
 };
 
 await displayChapterText();

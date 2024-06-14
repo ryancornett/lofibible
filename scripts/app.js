@@ -229,7 +229,6 @@ biblePlayer.addEventListener("ended", function () {
             handleEndOfAllChaptersExceptLastChapter(translation);
         }
         chapterSelector.dispatchEvent(new Event('input'));
-        // playChapter();
     } catch(error) {
         console.log(error);
     }
@@ -362,14 +361,12 @@ playPauseButton.forEach(btn => {
 //#region Get Chapter Text
 
 const chapterContainer = document.querySelector('.chapter-container');
-let isBibleTextGettable = true;
 
 async function GetChapterData() {
     let bookIndex = parseInt(bookSelector.value);
     try {
         const response = await fetch(`https://bible.helloao.org/api/${translation}/${apiRef[bookIndex]}/${chapterSelector.value}.json`);
-        if (!response.ok) {
-            isBibleTextGettable = false;
+        if (response.ok) {
             const chapter = await response.json();
             UpdateCache(translation, chapter);
             return chapter;
@@ -399,10 +396,9 @@ async function displayChapterText() {
     }
     else {
         try {
-            if (isBibleTextGettable) {
-                chapterComponents = await BuildChapter(await GetChapterData());
-            }
+            chapterComponents = await BuildChapter(await GetChapterData());
         } catch (error) {
+            console.log(error);
             chapterContainer.textContent = "Bible text not available at this time.";
         }
     }

@@ -70,7 +70,7 @@ function HandleVerse(item) {
         if (typeof item.content[i] === 'string' && item.content[i].includes("BOOK")) {
             continue;
         } else if (typeof item.content[i] === 'string') {
-            versePart.textContent += item.content[i];
+            versePart.textContent += ` ${item.content[i]}`;
         } else if (item.content[i] && 'poem' in item.content[i]) {
             let poemLine = document.createElement('span');
             let indent = item.content[i].poem;

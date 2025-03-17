@@ -411,7 +411,7 @@ input[type=range]::-ms-thumb {
 }
 
 .verse-number {
-    margin: 0 0.3rem;
+    margin: 0 0 0 0.15rem;
     font-weight: bold;
     font-size: 0.75rem;
     vertical-align: super;

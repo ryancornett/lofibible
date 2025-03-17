@@ -58,6 +58,7 @@ lofiPlayer.addEventListener("ended", async function () {
         lofiPlayer.play();
         songTitle.textContent = playlist[lofiIndex].title;
         songArtist.textContent = playlist[lofiIndex].artist;
+        artistLink.href = playlist[lofiIndex].source;
     } else {
         songTitle.textContent = "";
         songArtist.textContent = "An error occurred.";

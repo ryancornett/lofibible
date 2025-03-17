@@ -1507,6 +1507,24 @@ const lofi = [
     title: "Spirit Blossom",
     source: "https://pixabay.com/music/beats-spirit-blossom-15285/"
   },
+  {
+    file: `${chillPath}/lofi-295209.mp3`,
+    artist: "vivdillustrate",
+    title: "Lofi",
+    source: "https://pixabay.com/music/beats-lofi-295209/"
+  },
+  {
+    file: `${chillPath}/lofi-girl-309226.mp3`,
+    artist: "snoozybeats",
+    title: "Lofi Girl",
+    source: "https://pixabay.com/music/beats-lofi-girl-309226/"
+  },
+  {
+    file: `${chillPath}/lofi-2-312707.mp3`,
+    artist: "snoozybeats",
+    title: "Lofi 2",
+    source: "https://pixabay.com/music/beats-lofi-2-312707/"
+  },
 
 ];
 

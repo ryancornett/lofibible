@@ -3,6 +3,19 @@ import BuildChapter from "./builder.js";
 import Footer from "./footer.js";
 import Theme from "./theme.js";
 
+window.addEventListener("load", () => {
+  document.body.classList.add("loaded");
+  document.body.classList.remove("delayed");
+});
+
+const params = new URLSearchParams(window.location.search);
+const ref = params.get('ref'); // "genesis-22"
+
+if (ref) {
+  const [refBook, refChapter] = ref.split('-');
+  console.log(refBook, refChapter);
+}
+
 //#region lofiPlayer
 
 async function GetRandomLofiIndex(current) {

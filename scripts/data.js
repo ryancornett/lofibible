@@ -1525,6 +1525,36 @@ const lofi = [
     title: "Lofi 2",
     source: "https://pixabay.com/music/beats-lofi-2-312707/"
   },
+  {
+    file: `${chillPath}/Whispered-Dreams.mp3`,
+    artist: "MileStretch",
+    title: "Whispered Dreams",
+    source: "https://pixabay.com/music/whispered-dreams-316896/"
+  },
+  {
+    file: `${chillPath}/Nightfall-Whispers.mp3`,
+    artist: "MileStretch",
+    title: "Nightfall Whispers",
+    source: "https://pixabay.com/music/nightfall-whispers-316895/"
+  },
+  {
+    file: `${chillPath}/Sola-Fide.mp3`,
+    artist: "MileStretch",
+    title: "Sola Fide",
+    source: "https://pixabay.com/music/sola-fide-316915/"
+  },
+  {
+    file: `${chillPath}/Sola-Gratia.mp3`,
+    artist: "MileStretch",
+    title: "Sola Gratia",
+    source: "https://pixabay.com/music/sola-gratia-316913/"
+  },
+  {
+    file: `${chillPath}/Post-Tenebras-Lux.mp3`,
+    artist: "MileStretch",
+    title: "Post Tenebras Lux",
+    source: "https://pixabay.com/music/post-tenebras-lux-316914/"
+  },
 
 ];
 
@@ -1535,19 +1565,19 @@ const hymns = [
     file: `${hymnsPath}/come_thou_fount.mp3`,
     artist: "Lofi Hymns",
     title: "Come Thou Fount of Every Blessing",
-    source: "https://lofihymns.com/"
+    source: "https://x.com/lofibiblehymns"
   },
   {
     file: `${hymnsPath}/when-i-survey-the-wondrous-cross.mp3`,
     artist: "Lofi Hymns",
     title: "When I Survey the Wondrous Cross",
-    source: "https://lofihymns.com/"
+    source: "https://x.com/lofibiblehymns"
   },
   {
     file: `${hymnsPath}/nothing-but-the-blood.mp3`,
     artist: "Lofi Hymns",
     title: "Nothing but the Blood",
-    source: "https://lofihymns.com/"
+    source: "https://x.com/lofibiblehymns"
   }
 ];
 

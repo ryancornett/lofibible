@@ -11,7 +11,8 @@
         <meta name="keywords" content="Bible, audio, lofi, Scripture, Berean Standard Bible, King James Version, hymn, hymns">
         <meta name="author" content="Ryan Cornett">
         <meta property="og:image" content="https://lofi.bible/assets/lofi-bible.png">
-        <link rel="stylesheet" href="styles.css">
+        <link rel="preload" href="styles.css" as="style" onload="this.rel='stylesheet'">
+        <noscript><link rel="stylesheet" href="styles.css"></noscript>
     </head>
 
     <script async src="https://www.googletagmanager.com/gtag/js?id=G-FE0QT25F0E"></script>
@@ -23,7 +24,7 @@
     gtag('config', 'G-FE0QT25F0E');
     </script>
 
-    <body>
+    <body class="delayed">
         <div class="background"></div>
 
         <div class="app">
@@ -123,7 +124,7 @@
                 <p class="fs-0-9">Courtesy of <a href="https://pixabay.com/service/license-summary/" target="_blank" class="footer-link">Pixabay</a></p>
                 
                 <h5 class="mb-lowered">Lofi Hymns</h5>
-                <p class="fs-0-9">In cooperation with <a href="https://lofihymns.com" target="_blank" class="footer-link">Lofi Hymns</a>. Hymns to be released monthly beginning June, 2024.</p>
+                <p class="fs-0-9">In cooperation with <a href="https://x.com/lofibiblehymns" target="_blank" class="footer-link">Lofi Hymns</a>.
                 
                 <h4 class="mb-lowered attention">Bible Audio</h4>
                 <h5 class="mb-lowered">BSB</h5>

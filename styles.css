@@ -53,6 +53,40 @@ h1 {
     max-width: 100vw;
 }
 
+.background.loader {
+    background-image: url('assets/lofi-bible.png');
+    filter: hue-rotate(90deg);
+    background-position: center;
+    background-size: 30vh;
+    background-repeat: no-repeat;
+    position: relative;
+    z-index: 10000;
+    height: 100vh;
+    width: 100vw;
+}
+
+.flash {
+	-webkit-animation: flash 0.75s linear infinite alternate both;
+	        animation: flash 0.75s linear infinite alternate both;
+}
+
+@-webkit-keyframes flash {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+@keyframes flash {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
 .italicize {
     font-family: sans-serif;
     font-style: italic;

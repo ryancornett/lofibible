@@ -3,9 +3,12 @@ import BuildChapter from "./builder.js";
 import Footer from "./footer.js";
 import Theme from "./theme.js";
 
+const background = document.querySelector('.background');
 window.addEventListener("load", () => {
   document.body.classList.add("loaded");
   document.body.classList.remove("delayed");
+  background.classList.remove("flash");
+  background.classList.remove("loader");
 });
 
 const params = new URLSearchParams(window.location.search);
